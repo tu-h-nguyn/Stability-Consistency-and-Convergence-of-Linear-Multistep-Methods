@@ -204,5 +204,7 @@ Rao can Dahlquist thu nhat: bac toi da cua phuong phap k buoc 0-on dinh
   AM2   p = 3, bậc đo được = 3.007
   saved  Sections/generated/convergence_table.tex
   saved  Sections/generated/method_summary.tex
+  saved  Sections/generated/convergence_tabular.tex
+  saved  Sections/generated/bdf_stability_tabular.tex
   saved  Sections/generated/bdf_stability.tex
 ```

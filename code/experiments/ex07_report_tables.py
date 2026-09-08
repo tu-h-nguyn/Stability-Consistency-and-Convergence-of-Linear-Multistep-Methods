@@ -61,6 +61,14 @@ def run():
         label="tab:method-summary",
     ))
 
+    # Bare tabular variants for the beamer deck, which has no float placement.
+    write("convergence_tabular.tex", convergence_table(
+        studies, caption="", label="", float_env=False,
+    ))
+    write("bdf_stability_tabular.tex", bdf_stability_table(
+        [bdf(k) for k in range(1, 9)], caption="", label="", float_env=False,
+    ))
+
     write("bdf_stability.tex", bdf_stability_table(
         [bdf(k) for k in range(1, 9)],
         caption=(

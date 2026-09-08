@@ -897,6 +897,62 @@ Sai số tăng rất nhanh, dù phương pháp đã nhất quán.
 
 
 % =========================================================
+\section{Kiểm chứng bằng số}
+
+\begin{frame}{Ranh giới $k \le 6$ của họ BDF, tính trực tiếp}
+\begin{columns}[T]
+\column{0.46\textwidth}
+\footnotesize
+Với mỗi $k$, hệ số BDF được dựng lại từ
+\[
+  \sum_{j=1}^{k}\tfrac{1}{j}\nabla^{j}Y_{n+k}=hf_{n+k},
+\]
+rồi giải số $\rho(z)=0$ và so $\max_i|z_i|$ với $1$.
+
+\medskip
+Ranh giới $k\le 6$ \textbf{không được giả định trước} — nó hiện ra từ chính vị trí
+nghiệm của đa thức đặc trưng.
+
+\column{0.54\textwidth}
+\scriptsize
+\input{../Sections/generated/bdf_stability_tabular}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Chiều thuận của định lý: bậc hội tụ đo được}
+\begin{center}
+\includegraphics[width=0.92\textwidth]{../figures/fig04_convergence.png}
+\end{center}
+\vspace{-0.3em}
+\footnotesize
+Trái: năm phương pháp 0-ổn định trên $y'=y(1-y)$ — hệ số góc của $\log E$ theo $\log h$
+đúng bằng bậc lý thuyết. Phải: BDF3 và phương pháp A \emph{cùng bậc $3$}, chỉ khác nhau
+ở tính 0-ổn định.
+\end{frame}
+
+\begin{frame}{Sai số toàn cục: bậc lý thuyết so với bậc đo được}
+\begin{center}
+\scriptsize
+\input{../Sections/generated/convergence_tabular}
+\end{center}
+\vspace{0.4em}
+\footnotesize
+Mỗi lần giảm $h$ đi một nửa, sai số giảm $2^{p}$ lần. Sai lệch giữa bậc đo được và bậc
+lý thuyết lớn nhất chỉ khoảng $0.03$.
+\end{frame}
+
+\begin{frame}{0-ổn định và ổn định tuyệt đối là hai chuyện khác nhau}
+\begin{center}
+\includegraphics[width=0.92\textwidth]{../figures/fig05_stability_regions.png}
+\end{center}
+\vspace{-0.3em}
+\footnotesize
+AB3 vẫn 0-ổn định và vẫn hội tụ khi $h\to 0$, nhưng khoảng ổn định tuyệt đối của nó trên
+trục thực âm chỉ là $(-6/11,\,0)$. BDF chứa toàn bộ trục thực âm, nên phù hợp với bài
+toán cứng.
+\end{frame}
+
+% =========================================================
 \section{Kết luận}
 
 \begin{frame}{Tóm tắt}
@@ -912,6 +968,8 @@ Sai số tăng rất nhanh, dù phương pháp đã nhất quán.
     \text{Hội tụ}\Longleftrightarrow \text{Nhất quán} + \text{0-ổn định}.
   \]
   \item BDF nhất quán với mọi $k$, nhưng chỉ 0-ổn định với $k\le6$.
+  \item Mọi kết quả trên đã được kiểm chứng bằng số: bậc hội tụ đo được khớp bậc lý
+        thuyết, và $\max_i|z_i|$ của BDF vượt $1$ đúng từ $k=7$.
 \end{enumerate}
 \end{frame}
 

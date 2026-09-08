@@ -55,7 +55,17 @@ def frac(x: float, max_denominator: int = 10_000) -> str:
     return f"{sign}{n}" if d == 1 else rf"{sign}\tfrac{{{n}}}{{{d}}}"
 
 
-def convergence_table(studies: list[ConvergenceStudy], caption: str, label: str) -> str:
+def _wrap(body: list[str], caption: str, label: str, float_env: bool) -> str:
+    """Wrap a ``tabular`` in a ``table`` float, or return it bare for beamer."""
+    if not float_env:
+        return "\n".join(body)
+    head = [r"\begin{table}[H]", r"\centering", rf"\caption{{{caption}}}", rf"\label{{{label}}}"]
+    return "\n".join(head + body + [r"\end{table}"])
+
+
+def convergence_table(
+    studies: list[ConvergenceStudy], caption: str, label: str, float_env: bool = True
+) -> str:
     """Global error at ``T`` for several methods over a shared step sequence."""
     if not studies:
         raise ValueError("at least one study is required")
@@ -68,10 +78,6 @@ def convergence_table(studies: list[ConvergenceStudy], caption: str, label: str)
     head = " & ".join(rf"\textbf{{{s.method.name}}}" for s in studies)
     orders = " & ".join(f"$p={s.method.order}$" for s in studies)
     lines = [
-        r"\begin{table}[H]",
-        r"\centering",
-        rf"\caption{{{caption}}}",
-        rf"\label{{{label}}}",
         r"\renewcommand{\arraystretch}{1.2}",
         rf"\begin{{tabular}}{{{cols}}}",
         r"\toprule",
@@ -88,18 +94,15 @@ def convergence_table(studies: list[ConvergenceStudy], caption: str, label: str)
         rf"\textbf{{bậc đo được}} & {measured}\\",
         r"\bottomrule",
         r"\end{tabular}",
-        r"\end{table}",
     ]
-    return "\n".join(lines)
+    return _wrap(lines, caption, label, float_env)
 
 
-def method_table(methods: list[LinearMultistepMethod], caption: str, label: str) -> str:
+def method_table(
+    methods: list[LinearMultistepMethod], caption: str, label: str, float_env: bool = True
+) -> str:
     """Structural summary: order, error constant, consistency, zero-stability."""
     lines = [
-        r"\begin{table}[H]",
-        r"\centering",
-        rf"\caption{{{caption}}}",
-        rf"\label{{{label}}}",
         r"\renewcommand{\arraystretch}{1.25}",
         r"\begin{tabular}{lccccccc}",
         r"\toprule",
@@ -116,17 +119,15 @@ def method_table(methods: list[LinearMultistepMethod], caption: str, label: str)
             rf"${frac(constant)}$ & {yes if m.is_consistent else no} & "
             rf"{yes if m.is_zero_stable else no} & {yes if m.is_convergent else no}\\"
         )
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
-    return "\n".join(lines)
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    return _wrap(lines, caption, label, float_env)
 
 
-def bdf_stability_table(methods: list[LinearMultistepMethod], caption: str, label: str) -> str:
+def bdf_stability_table(
+    methods: list[LinearMultistepMethod], caption: str, label: str, float_env: bool = True
+) -> str:
     """The k <= 6 limit of the BDF family, read off the roots of rho."""
     lines = [
-        r"\begin{table}[H]",
-        r"\centering",
-        rf"\caption{{{caption}}}",
-        rf"\label{{{label}}}",
         r"\renewcommand{\arraystretch}{1.25}",
         r"\begin{tabular}{cccc}",
         r"\toprule",
@@ -137,8 +138,8 @@ def bdf_stability_table(methods: list[LinearMultistepMethod], caption: str, labe
         r_max = float(np.max(np.abs(m.root_condition().roots)))
         verdict = "0-ổn định" if m.is_zero_stable else r"\textbf{không 0-ổn định}"
         lines.append(rf"{m.k} & {m.order} & ${r_max:.4f}$ & {verdict}\\")
-    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
-    return "\n".join(lines)
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    return _wrap(lines, caption, label, float_env)
 
 
 def write(name: str, body: str, directory: Path | None = None) -> Path:

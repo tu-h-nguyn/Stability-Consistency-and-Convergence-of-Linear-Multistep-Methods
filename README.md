@@ -6,7 +6,7 @@
 [![Tests](https://img.shields.io/badge/tests-86%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (45 trang)](slides/main.pdf)**
+📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (50 trang)](slides/main.pdf)**
 
 > **Định lý tương đương Dahlquist (1956).** Một phương pháp đa bước tuyến tính hội tụ
 > **khi và chỉ khi** nó vừa nhất quán, vừa 0-ổn định.
@@ -264,8 +264,9 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 ├── main.tex, main.pdf        # báo cáo LaTeX (tiếng Việt), 63 trang
 ├── Sections/                 # 4 chương (section_1..4) + một bản nháp chưa dùng
 │   └── generated/            # bảng LaTeX sinh từ code — KHÔNG sửa tay
+│                             # (bản `table` cho báo cáo, bản `tabular` cho slide)
 ├── images/                   # hình gốc trong báo cáo
-├── slides/                   # bản trình bày Beamer, 45 trang
+├── slides/                   # bản trình bày Beamer, 50 trang
 │
 ├── code/
 │   ├── lmm/                  # thư viện
@@ -309,8 +310,11 @@ Báo cáo gồm 4 chương, 63 trang:
 
 ```bash
 make report    # -> main.pdf   (63 trang)
-make slides    # -> slides/main.pdf (45 trang)
+make slides    # -> slides/main.pdf (50 trang)
 ```
+
+Slide (50 trang) dùng lại chính các hình và bảng do `lmm` sinh ra, nên phần trình bày
+và báo cáo không thể lệch số liệu của nhau.
 
 Cần một bản phân phối TeX có `babel-vietnamese`, `tcolorbox`, `listings`, `titlesec`
 (TeX Live đầy đủ là đủ). Cả hai tài liệu biên dịch **không còn cảnh báo tham chiếu
@@ -332,6 +336,8 @@ chứng.
 
 Báo cáo thực hiện trong môn **Giải tích số cho Phương trình vi phân**, Trường Đại học
 Khoa học Tự nhiên, ĐHQG-HCM, dưới hướng dẫn của TS. Nguyễn Đăng Khoa.
+
+**Nhóm thực hiện:** L. T. Nhân · D. T. H. Yến · N. H. Tú
 
 Mã nguồn phát hành theo giấy phép [MIT](LICENSE).
 
