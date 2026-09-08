@@ -262,7 +262,7 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 ```
 .
 ├── main.tex, main.pdf        # báo cáo LaTeX (tiếng Việt), 63 trang
-├── Sections/                 # 4 chương (section_1..4) + một bản nháp chưa dùng
+├── Sections/                 # 4 chương của báo cáo
 │   └── generated/            # bảng LaTeX sinh từ code — KHÔNG sửa tay
 │                             # (bản `table` cho báo cáo, bản `tabular` cho slide)
 ├── images/                   # hình gốc trong báo cáo
