@@ -1,0 +1,100 @@
+\section{Chương 3. Nghiên cứu sâu về Tính 0-ổn định (Zero-stability)}
+
+\subsection{Khái niệm bài toán giới hạn 0-ổn định}
+%\begin{itemize}
+%    \item Định nghĩa cơ học toán: Xét hành vi ổn định nội tại của phương pháp đa bước trong kịch bản giới hạn biên khi bước nhảy lưới $h \to 0$.
+%    \item Chuyển đổi mô hình về việc giải phương trình sai phân thuần nhất tuyến tính: $\sum_{j=0}^k \alpha_j y_{n+j} = 0$.
+%\end{itemize}
+
+Tính ổn định là một khái niệm đa diện trong giải tích số, nhưng ở mức độ nền tảng nhất, một thuật toán phải có khả năng tự duy trì sự ổn định ngay cả trong những kịch bản đơn giản nhất. Khái niệm 0-ổn định (Zero-stability) ra đời nhằm khảo sát hành vi ổn định nội tại của một phương pháp đa bước khi kích thước bước lưới tiến dần về không.
+
+\vspace{0.5em}
+\noindent \textbf{1. Định nghĩa cơ học toán và kịch bản giới hạn biên}
+\begin{itemize}
+    \item \textbf{Bản chất cơ học toán:} Trong tính toán số, khi ta thực hiện làm mịn lưới (tức bước nhảy $h \to 0$), số lượng bước lặp $N = \frac{T - t_0}{h}$ cần thiết để đi hết miền tích phân $[t_0, T]$ sẽ tiến tới vô cùng ($N \to \infty$). Ở kịch bản giới hạn biên này, nguy cơ tích lũy và khuếch đại sai số làm tròn hoặc sai số chặt cụt qua hàng triệu bước lặp trở nên gay gắt nhất.
+    \item \textbf{Kịch bản bài toán giới hạn:} Để tách biệt hoàn toàn tính chất ổn định nội tại của sơ đồ sai phân khỏi những sự phức tạp gây ra bởi dạng hàm vi phân vế phải $f(t, y)$, ta xét hành vi của phương pháp trên bài toán giá trị đầu vi phân đơn giản nhất — bài toán tầm thường (hàm hằng):
+    \begin{equation}
+        y'(t) = 0, \qquad y(t_0) = 0. \tag{3.1}
+    \end{equation}
+    Nghiệm giải tích chính xác của bài toán này hiển nhiên là $y(t) \equiv 0$ với mọi $t \ge t_0$. Một phương pháp số hợp lý tối thiểu phải tạo ra được dãy nghiệm xấp xỉ không bị bùng nổ khi áp dụng vào phương trình vi phân tầm thường này.
+\end{itemize}
+
+\vspace{0.5em}
+\noindent \textbf{2. Chuyển đổi mô hình về phương trình sai phân thuần nhất tuyến tính}
+
+\noindent Xét phương pháp đa bước tuyến tính tổng quát $k$-bước áp dụng vào bài toán (3.1):
+\[
+    \sum_{j=0}^{k} \alpha_j y_{n+j} = h \sum_{j=0}^{k} \beta_j f(t_{n+j}, y_{n+j}).
+\]
+Vì vế phải phương trình vi phân là $f(t, y) \equiv 0$, toàn bộ phần đóng góp từ tổ hợp phi tuyến phía vế phải của phương pháp đa bước bị triệt tiêu hoàn toàn. Khi bước lưới $h \to 0$, mô hình tính toán số suy biến trực tiếp về việc giải một phương trình sai phân thuần nhất tuyến tính hệ số hằng:
+\begin{equation}
+    \sum_{j=0}^{k} \alpha_j y_{n+j} = \alpha_k y_{n+k} + \alpha_{k-1} y_{n+k-1} + \dots + \alpha_0 y_n = 0. \tag{3.2}
+\end{equation}
+
+\begin{itemize}
+    \item \textbf{Ý nghĩa cấu trúc:} Phương trình sai phân (3.2) chỉ phụ thuộc vào bộ hệ số vế trái $\{\alpha_j\}_{j=0}^k$. Đây chính là cốt lõi tự động mang tính động lực học (dynamical core) của phương pháp đa bước.
+    \item \textbf{Khái niệm 0-ổn định:} Phương pháp đa bước tuyến tính được gọi là 0-ổn định nếu mọi nghiệm $\{y_n\}$ của phương trình sai phân thuần nhất (3.2) — ứng với bất kỳ tập dữ liệu khởi động nhiễu $y_0, y_1, \dots, y_{k-1}$ bị chặn nào — đều bị chặn trên toàn bộ chuỗi lặp $n \to \infty$:
+    \[
+        \exists M > 0 \quad \text{sao cho} \quad |y_n| \le M, \qquad \forall n \ge 0.
+    \]
+    Nói cách khác, tính 0-ổn định bảo đảm rằng cơ cấu lặp nội tại của thuật toán không tự ý "sản sinh" ra các nghiệm ký sinh tăng trưởng hàm mũ khi bước nhảy $h$ tiến về $0$.
+\end{itemize}
+
+\subsection{Đa thức đặc trưng thứ nhất và Điều kiện nghiệm Dahlquist (Root Condition)}
+%\begin{itemize}
+%    \item Định nghĩa đa thức đặc trưng thứ nhất: $\rho(\zeta) = \sum_{j=0}^k \alpha_j \zeta^j$.
+%    \item \textbf{Phát biểu điều kiện nghiệm:} Phương pháp đa bước đạt tính 0-ổn định khi và chỉ khi tất cả các nghiệm phức $\zeta_i$ của phương trình $\rho(\zeta) = 0$ nằm trong hoặc trên đường tròn đơn vị ($|\zeta_i| \le 1$), đồng thời các nghiệm nằm trực tiếp trên biên ($|\zeta_i| = 1$) phải là nghiệm đơn.
+%\end{itemize}
+
+Để phân tích tính 0-ổn định của một phương pháp đa bước tuyến tính $k$-bước một cách chặt chẽ và tiện lợi, ta cần chuyển đổi bài toán khảo sát tính bị chặn của nghiệm phương trình sai phân thuần nhất về việc khảo sát sự phân bố các nghiệm phức của một đa thức đại số gắn liền với sơ đồ đó.
+
+\vspace{0.5em}
+\noindent \textbf{1. Định nghĩa đa thức đặc trưng thứ nhất}
+\begin{itemize}
+    \item \textbf{Cơ sở toán học:} Khi xét bài toán giới hạn $h \to 0$, nghiệm số $\{Y_n\}$ được chi phối hoàn toàn bởi phương trình sai phân tuyến tính thuần nhất hệ số hằng:
+    \[
+        \sum_{j=0}^{k} \alpha_j y_{n+j} = 0, \qquad (\alpha_k \neq 0).
+    \]
+    Theo lý thuyết phương trình sai phân, nghiệm riêng của phương trình này có dạng tìm kiếm dưới dạng lũy thừa $y_n = \zeta^n$ (với $\zeta \in \mathbb{C} \setminus \{0\}$). Thay biểu thức này vào phương trình sai phân và giản ước cho $\zeta^n$, ta thu được phương trình đại số đặc trưng.
+    \item \textbf{Định nghĩa formal:} Đa thức bậc $k$ biến số phức $\zeta$ được xác định bởi công thức:
+    \begin{equation}
+        \rho(\zeta) = \sum_{j=0}^{k} \alpha_j \zeta^j = \alpha_k \zeta^k + \alpha_{k-1} \zeta^{k-1} + \dots + \alpha_1 \zeta + \alpha_0 \tag{3.3}
+    \end{equation}
+    được gọi là \textbf{đa thức đặc trưng thứ nhất} (First Characteristic Polynomial) của phương pháp đa bước tuyến tính.
+    \item \textit{Ý nghĩa:} Đa thức $\rho(\zeta)$ chỉ phụ thuộc duy nhất vào tổ hợp các hệ số vế trái $\{\alpha_j\}_{j=0}^k$ (các trọng số áp dụng cho các giá trị nghiệm quá khứ). Do đó, cấu trúc của $\rho(\zeta)$ quyết định hoàn toàn động lực học tự do (free dynamics) của phương pháp số khi không có tác động từ vế phải vi phân.
+\end{itemize}
+
+\vspace{0.5em}
+\noindent \textbf{2. Phát biểu Điều kiện nghiệm Dahlquist (Root Condition)}
+
+\noindent Gọi $\zeta_1, \zeta_2, \dots, \zeta_k$ là $k$ nghiệm phức (kể cả bội) của phương trình đại số $\rho(\zeta) = 0$. Nghiệm tổng quát của phương trình sai phân khi đó là sự tổ hợp tuyến tính của các số hạng có dạng $\zeta_i^n$ (đối với nghiệm đơn) và $n^{m-1}\zeta_i^n$ (đối với nghiệm bội $m \ge 2$). Từ yêu cầu nghiệm $\{y_n\}$ phải luôn bị chặn khi $n \to \infty$, nhà toán học Germund Dahlquist đã thiết lập nên điều kiện mang tính quyết định sau:
+
+\begin{theorem}[Điều kiện nghiệm Dahlquist]
+Một phương pháp đa bước tuyến tính đạt tính \textbf{0-ổn định (Zero-stability)} khi và chỉ khi đa thức đặc trưng thứ nhất $\rho(\zeta)$ của nó thỏa mãn Điều kiện nghiệm (Root Condition), cụ thể là:
+\begin{enumerate}
+    \item Tất cả các nghiệm phức $\zeta_i$ của phương trình $\rho(\zeta) = 0$ đều nằm trong hoặc nằm trên hình tròn đơn vị của mặt phẳng phức:
+    \[
+        |\zeta_i| \le 1, \qquad \forall i = 1, 2, \dots, k.
+    \]
+    \item Các nghiệm có modun đúng bằng $1$ (nằm trực tiếp trên biên của đường tròn đơn vị, tức $|\zeta_i| = 1$) bắt buộc phải là \textbf{nghiệm đơn} (bội đại số bằng $1$).
+\end{enumerate}
+\end{theorem}
+
+\begin{itemize}
+    \item \textbf{Phân tích các kịch bản vi phạm Điều kiện nghiệm:}
+    \begin{itemize}
+        \item \textit{Trường hợp 1 (Tồn tại nghiệm $|\zeta_s| > 1$):} Khi đó thành phần nghiệm $\zeta_s^n$ sẽ tăng trưởng theo hàm mũ khi $n \to \infty$. Dù sai số làm tròn hoặc sai số bước mồi ban đầu nhỏ đến đâu, nó cũng bị bùng nổ vô hạn theo tốc độ $|\zeta_s|^n$. Phương pháp rơi vào trạng thái \textbf{mất ổn định mạnh (Strongly Unstable)}.
+        \item \textit{Trường hợp 2 (Tồn tại nghiệm bội $m \ge 2$ trên biên $|\zeta_m| = 1$):} Khi đó phương trình sai phân xuất hiện thành phần nghiệm mang tính chất lặp tăng trưởng đa thức $n^{m-1} \zeta_m^n$. Vì $|\zeta_m| = 1$, biên độ nghiệm sẽ tăng theo tốc độ $n^{m-1} \to \infty$. Phương pháp rơi vào trạng thái \textbf{mất ổn định yếu (Weakly Unstable / Instability due to resonance)}.
+    \end{itemize}
+    \item \textit{Lưu ý đặc biệt:} Vì bất kỳ phương pháp đa bước nào muốn có tính chất **Nhất quán** tối thiểu đều phải thỏa mãn $\rho(1) = 0$, nên $\zeta = 1$ \textit{luôn luôn} là một nghiệm của đa thức đặc trưng thứ nhất (gọi là **nghiệm chính** - Principal Root). Để phương pháp vừa nhất quán vừa 0-ổn định, nghiệm chính $\zeta = 1$ này buộc phải là nghiệm đơn; tất cả $k-1$ nghiệm còn lại (nghiệm ký sinh - Parasitic Roots) phải nằm nghiêm ngặt bên trong hình tròn đơn vị ($|\zeta_i| < 1$), hoặc nếu nằm trên biên ($|\zeta_i| = 1, \zeta_i \neq 1$) thì cũng phải là nghiệm đơn.
+\end{itemize}
+
+
+
+\subsection{Quy trình đại số kiểm tra tính 0-ổn định cho một phương pháp bất kỳ}
+\begin{itemize}
+    \item Các bước chuẩn hóa từ việc lập đa thức đặc trưng $\rho(\zeta)$, giải tìm tập nghiệm và đánh giá module của nghiệm.
+\end{itemize}
+
+% ==========================================
+\newpage

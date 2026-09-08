@@ -1,0 +1,215 @@
+\section{Chương 1. Mở đầu và một số kiến thức chuẩn bị}
+
+\subsection{Một số kiến thức chuẩn bị}
+    Trước khi đi sâu vào việc thiết lập công thức và khảo sát sự hội tụ của phương pháp đa bước tuyến tính, ta cần chuẩn bị một số công cụ giải tích và đại số nền tảng. Cụ thể, \textit{khai triển Taylor} đóng vai trò là công cụ chủ chốt để xây dựng công thức xấp xỉ đạo hàm và đánh giá sai số chặt cụt; \textit{định lý tồn tại duy nhất Picard–Lindelöf} bảo đảm tính đặt chỉnh của bài toán giá trị đầu; và lý thuyết \textit{phương trình sai phân tuyến tính hệ số hằng cùng đa thức đặc trưng} là cơ sở để phân tích sai số và tính ổn định số của phương pháp số.
+    
+\subsubsection{Khai triển Taylor phần dư Lagrange}
+Khai triển Taylor là công cụ toán học chủ chốt dùng để thiết lập các phương trình xấp xỉ đạo hàm và đánh giá sai số chặt cụt cục bộ (Local Truncation Error) của các phương pháp số.
+\begin{baitapbox}{Công thức Taylor với phần dư dạng Lagrange}
+    Giả sử hàm số $y(t)$ thuộc lớp khả vi liên tục $C^{m+1}([t_0, T])$. Khi đó, với mọi $t, t + h \in [t_0, T]$, giá trị của hàm tại điểm kề tiếp có thể được biểu diễn dưới dạng:
+    \begin{equation}
+        y(t + h) = y(t) + h y'(t) + \frac{h^2}{2!} y''(t) + \dots + \frac{h^m}{m!} y^{(m)}(t) + R_m(t) \tag{1.1} \label{eq:1.1}
+    \end{equation}
+    \noindent trong đó $R_m(t)$ là số dư bậc $m$, được xác định bởi:
+    \[
+        R_m(t) = \frac{h^{m+1}}{(m+1)!} y^{(m+1)}(\xi), \qquad \xi \in (\min(t, t+h), \max(t, t+h)).
+    \]
+
+\end{baitapbox}
+\textbf{Ý nghĩa trong phương pháp đa bước:} Khi khai triển giá trị $y(t_n + jh)$ và đạo hàm $y'(t_n + jh) = f(t_{n+j}, y_{n+j})$ xung quanh điểm nút $t_n$, các tổ hợp tuyến tính của chúng cho phép triệt tiêu các bậc đạo hàm thấp của $h$, từ đó xây dựng được công thức đa bước đạt bậc chính xác $p$ mong muốn (tức phần dư $R_p \sim \mathcal{O}(h^{p+1})$).\\
+
+
+
+Tính đặt chỉnh (well-posedness) của bài toán giá trị đầu (IVP) là tiền đề bắt buộc trước khi áp dụng bất kỳ thuật toán xấp xỉ số nào. Nếu phương trình vi phân ban đầu không có nghiệm duy nhất hoặc nghiệm phụ thuộc không liên tục vào dữ liệu ban đầu, mọi xấp xỉ số đều mất ý nghĩa thực tiễn.
+
+\subsubsection{Tính liên tục Lipschitz}
+
+\begin{baitapbox}{Điều kiện Lipschitz}
+Hàm $f(t, y)$ định nghĩa trên miền $D \subset \mathbb{R} \times \mathbb{R}^d$ được gọi là thỏa mãn điều kiện Lipschitz theo biến $y$ trên $D$ với hằng số $L > 0$ nếu:
+\[
+    \|f(t, u) - f(t, v)\| \le L\|u - v|, \qquad \forall (t, u), (t, v) \in D.
+\]
+\end{baitapbox}
+
+\subsubsection{Sự tồn tại nghiệm và định lý Picard--Lindelöf}
+
+\begin{baitapbox}{Định lý Picard - Lindelöf}
+    \begin{enumerate}
+        \item Nếu $f$ liên tục trên miền hình chữ nhật:
+        \[
+        R = \{(t,y): t_0 \le t \le T_{max}\}
+        \]
+        \item Hàm số $f$ bị chặn trên miền hình chữ nhật:
+        \[
+        M_0 =max\{|f(t;y)|:(t;y) \in R\}
+        \]
+        và hơn nữa $M_0(T_{max} - t_0) \le y_M$
+        \item Nếu $f$ liên tục theo $t$ và Lipschitz theo biến $y$, tức tồn tại $L > 0$ sao cho
+        \[
+        \|f(t, u) - f(t, v)\| \le L\|u - v\|, \qquad \forall t \in [t_0, T], \quad \forall u, v \in \mathbb{R}^d,
+        \]
+    \end{enumerate}
+   
+    Nếu $f$ thỏa mãn các điều kiện trên thì tồn tại $\epsilon > 0$ sao cho bài bài toán
+    \[
+    y'(t) = f(t, y(t)), \qquad t \in [t_0, T_{max}], \qquad y(t_0) = y_0
+    \]
+    có duy nhất nghiệm $y(t)$ trong đoạn $[t_0-\epsilon;t_0+\epsilon]$
+\end{baitapbox}
+
+\subsubsection{Phương trình sai phân tuyến tính hệ số hằng và đa thức đặc trưng}
+
+Trong lý thuyết hội tụ của phương pháp đa bước, hằng số Lipschitz $L$ đóng vai trò quyết định trong việc thiết lập giới hạn lan truyền của sai số toàn cục thông qua Bổ đề Gronwall rời rạc.
+
+Khi khảo sát hành vi tiệm cận của phương pháp đa bước lúc bước nhảy $h \to 0$, bài toán được quy về việc phân tích nghiệm của một phương trình sai phân thuần nhất tuyến tính.
+\begin{baitapbox}{Phương trình sai phân tuyến tính và đa thức đặc trưng}
+    Xét phương trình sai phân tuyến tính cấp $k$ với hệ số hằng:
+\begin{equation}
+    \alpha_k y_{n+k} + \alpha_{k-1} y_{n+k-1} + \dots + \alpha_0 y_n = 0, \qquad (\alpha_k \neq 0, \, \alpha_0 \neq 0). \tag{1.2} \label{eq:1.2}
+\end{equation}
+\noindent Để giải phương trình \eqref{eq:1.2}, ta tìm nghiệm dưới dạng $y_n = \zeta^n$ ($\zeta \in \mathbb{C}$, $\zeta \neq 0$). Thay vào phương trình, ta thu được \textit{đa thức đặc trưng}:
+\begin{equation}
+    \rho(\zeta) = \alpha_k \zeta^k + \alpha_{k-1} \zeta^{k-1} + \dots + \alpha_0 = \sum_{j=0}^k \alpha_j \zeta^j = 0. \tag{1.3} \label{eq:1.3}
+\end{equation}
+
+\noindent Cấu trúc nghiệm tổng quát của phương trình sai phân \eqref{eq:1.2} hoàn toàn phụ thuộc vào nghiệm của phương trình đại số \eqref{eq:1.3}:
+\begin{itemize}
+    \item Nếu $\zeta_i$ là một nghiệm đơn của $\rho(\zeta) = 0$, nó đóng góp một nghiệm riêng dạng $y_n^{(i)} = C_i \zeta_i^n$.
+    \item Nếu $\zeta_j$ là một nghiệm bội bậc $m_j$ của $\rho(\zeta) = 0$, nó đóng góp $m_j$ nghiệm độc lập tuyến tính dạng:
+    \[
+        y_n^{(j, 0)} = \zeta_j^n, \quad y_n^{(j, 1)} = n \zeta_j^n, \quad \dots, \quad y_n^{(j, m_j-1)} = n^{m_j-1} \zeta_j^n.
+    \]
+\end{itemize}
+\end{baitapbox}
+
+\noindent \textbf{Hệ quả đối với tính ổn định:} Dãy nghiệm xấp xỉ $\{Y_n\}$ bị chặn (không bùng nổ vô hạn khi $n \to \infty$) khi và chỉ khi mọi nghiệm của phương trình đặc trưng thỏa mãn $|\zeta_i| \le 1$, và nếu có nghiệm nằm trực tiếp trên đường tròn đơn vị ($|\zeta_i| = 1$) thì nghiệm đó buộc phải là nghiệm đơn. Đây chính là nền tảng toán học của \textit{Điều kiện nghiệm Dahlquist (Root Condition)}.
+
+%\subsubsection{Tính nhất quán, ổn định và sự hội tụ của một phương pháp số}
+%Trước khi đi vào phân tích và tìm các điều kiện, hệ điều kiện để phương pháp đa bước tuyến tính nhất quán, ổn định, hội tụ. Ta cùng nhắc lại các định nghĩa tổng quát của tính \textit{nhất quán}, \textit{ổn định} và \textit{hội tụ}.
+\subsubsection{Phép nội suy Lagrange}
+\begin{baitapbox}{Đa thức nội suy Lagrange}
+    Cho $n+1$ điểm dữ liệu $(x_0, y_0), (x_1, y_1), \dots, (x_n, y_n)$. Đa thức nội suy $P(x)$ bậc không vượt quá $n$ có dạng tổng quát:
+\[
+P(x) = \sum_{i=0}^{n} y_i L_i(x)
+\]
+Trong đó, $L_i(x)$ là các đa thức cơ sở Lagrange được tính theo công thức:
+\[
+L_i(x) = \prod_{j=0\\ j \neq i}^{n} \frac{x - x_j}{x_i - x_j} = \frac{(x-x_0)\dots(x-x_{i-1})(x-x_{i+1})\dots(x-x_n)}{(x_i-x_0)\dots(x_i-x_{i-1})(x_i-x_{i+1})\dots(x_i-x_n)}
+\]
+\end{baitapbox}
+
+\subsection{Bài toán giá trị đầu (IVP) và sự cần thiết của phương pháp số}
+
+Xét bài toán giá trị ban đầu đối với phương trình vi phân thường
+\begin{equation}
+    y'(t) = f(t, y(t)), \qquad t \in [t_0, T_{max}], \qquad y(t_0) = y_0, \tag{1.1} \label{eq:1.1}
+\end{equation}
+\noindent trong đó $y(t) \in \mathbb{R}^d$, $f : [t_0, T] \times \mathbb{R}^d \to \mathbb{R}^d$ là hàm đã cho.Ta giả sử $f$ liên tục theo $t$ và Lipschitz theo biến $y$, tức tồn tại $L > 0$ sao cho
+        \[
+        \|f(t, u) - f(t, v)\| \le L\|u - v\|, \qquad \forall t \in [t_0, T], \quad \forall u, v \in \mathbb{R}^d,
+        \]
+
+Hiển nhiên theo định lý Picard thì \eqref{eq:1.1} có duy nhất nghiệm $y(t)$ trên đoạn $[t_0 - \epsilon;t_o + \epsilon]$. Trong báo cáo này ta giả sử nghiệm đủ trơn để các khai triển Taylor cần thiết đều hợp lệ.
+
+Để tính nghiệm số, ta chia đoạn $[t_0, T]$ thành $N$ đoạn con bằng nhau:
+\[
+    h = \frac{T - t_0}{N}, \qquad t_n = t_0 + nh, \qquad n = 0, 1, \dots, N.
+\]
+
+Ta cần xây dựng dãy $Y_n$ sao cho
+\[
+    Y_n \approx y(t_n).
+\]
+
+Sai số tại nút $t_n$ thường được gọi là sai số toàn cục:
+\[
+    e_n = y(t_n) - Y_n.
+\]
+
+Mục tiêu cuối cùng là khi cho bước lưới tiến về 0 $h \to 0$ thì ta đi tìm các điều kiện, hệ điều kiện để $\max \|e_n\| \to 0$.\\
+
+% Trong thế giới thực, các định lý tự nhiên thường được biểu diễn dưới dạng mối liên hệ giữa \textbf{trạng thái hiện tại} của hệ thống và \textbf{tốc độ thay đổi} của nó. Do đó, IVP đóng vai trò là “ngôn ngữ cơ bản” để mô hình hóa sự tiến hóa động theo thời gian:
+
+% \begin{itemize}[leftmargin=*]
+%     \item \textbf{Cơ học \& Kỹ thuật hàng không:} Định luật II Newton $m\mathbf{a} = \mathbf{F}(t, \mathbf{x}, \mathbf{v})$ được viết dưới dạng IVP để dự đoán quỹ đạo bay của tên lửa, vệ tinh hoặc tàu vũ trụ dựa trên vị trí và vận tốc lúc phóng ($t=0$).
+%     \item \textbf{Kỹ thuật điện \& Điện tử:} Phân tích quá độ trong các mạch điện RLC, hệ thống điều khiển tự động nơi điện áp và dòng điện phụ thuộc vào các điều kiện ban đầu của tụ điện và cuộn cảm.
+%     \item \textbf{Sinh học \& Dịch tễ học:} Các mô hình truyền nhiễm (như mô hình SIR/SEIR) dự báo sự lây lan của dịch bệnh từ một số lượng ca nhiễm khởi phát ban đầu $I(0) = I_0$.
+%     \item \textbf{Kỹ thuật Hóa học:} Mô phỏng động học phản ứng nồng độ các chất trong lò phản ứng liên tục theo thời gian.
+% \end{itemize}    
+
+% Dù việc tìm nghiệm giải tích (nghiệm chính xác dưới dạng công thức toán học tường minh $y(t)$) luôn là lý tưởng, nhưng trong thực tế kỹ thuật, ta \textbf{bắt buộc phải dùng phương pháp số} vì các lý do toán học và thực tiễn sau:
+
+% \begin{itemize}[leftmargin=*]
+%     \item \textbf{Sự thống trị của tính phi tuyến (Nonlinearity):}
+%     Chỉ một lớp rất nhỏ các phương trình vi phân (như phương trình tuyến tính, phương trình biến số phân ly, Bernoulli, Euler...) mới có nghiệm giải tích. Hầu hết các bài toán thực tế chứa các phần tử phi tuyến phức tạp (ví dụ: lực cản không khí tỷ lệ với $v^2$, dao động con lắc lớn $\sin\theta$). Các phương trình phi tuyến này không tồn tại nghiệm biểu diễn qua các hàm sơ cấp.
+    
+%     \item \textbf{Quy mô hệ phương trình lớn (Curse of Dimensionality):}
+%     Khi rời rạc hóa các phương trình vi phân riêng phần (PDEs) theo phương pháp đường (Method of Lines) — ví dụ như phương trình Navier-Stokes trong động lực học lưu chất (CFD) hay truyền nhiệt — ta nhận được hệ IVP gồm hàng nghìn đến hàng triệu phương trình ODE liên kết với nhau ($d = 10^3 \sim 10^6$). Việc giải tích cho các hệ này là bất khả thi.
+
+%     \item \textbf{Dữ liệu thực nghiệm dạng bảng (Empirical Data):}
+%     Trong nhiều hệ thống kỹ thuật, hàm $f(t, y)$ không được cho bởi một công thức toán học khép kín mà được thu thập qua thực nghiệm, bảng tra cứu (lookup tables) hoặc các cảm biến đo đạc thời gian thực theo từng bước rời rạc. Phương pháp giải tích không thể áp dụng cho các hàm không tường minh này.
+
+%     \item \textbf{Tính hiệu quả và khả năng kiểm soát sai số:}
+%     Các phương pháp số (như Euler, Runge-Kutta RK4, Adams-Bashforth) cho phép thay thế việc giải phương trình vi phân liên tục bằng một chuỗi các phép tính đại số lặp trên lưới thời gian rời rạc $t_n = t_0 + nh$. Ngay cả khi bài toán có nghiệm giải tích (thường chứa các tích phân không thể tính đúng hoặc chuỗi vô hạn), phương pháp số cung cấp giá trị xấp xỉ $y_n \approx y(t_n)$ nhanh hơn, dễ lập trình hơn trên máy tính và có thể kiểm soát được sai số làm tròn/sai số phương pháp.
+% \end{itemize}
+
+
+
+\subsection{Tổng quan về phương pháp số một bước và đa bước}
+
+Trong giải tích số, các phương pháp xấp xỉ nghiệm của bài toán giá trị đầu (IVP) \eqref{eq:1.1} được chia thành hai họ chính dựa trên số lượng mốc thời gian quá khứ được sử dụng để tính toán trạng thái tiếp theo.
+
+\subsubsection{Phương pháp một bước}
+Phương pháp một bước là lớp phương pháp mà để tính giá trị xấp xỉ $y_{n+1} \approx Y(t_{n+1})$ tại mốc thời gian mới, thuật toán \textbf{chỉ sử dụng thông tin từ mốc thời gian liền trước đó} là $(t_n, y_n)$. Công thức tổng quát của họ phương pháp này có dạng:
+\begin{equation}
+    Y_{n+1} = Y_n + h \Phi(t_n, y_n, h), \tag{1.6}
+\end{equation}
+\noindent trong đó $\Phi$ được gọi là hàm gia số, đại diện cho độ dốc trung bình trên đoạn $[t_n, t_{n+1}]$.
+
+\begin{itemize}[label=\null]
+    \item \textbf{Đại diện tiêu biểu:} Phương pháp Euler (bậc 1) và họ phương pháp Runge--Kutta (như RK4 bậc 4).
+    \item \textbf{Ưu điểm:} Tính tự khởi động, do chỉ phụ thuộc vào $y_n$, phương pháp có thể bắt đầu tính ngay từ điều kiện ban đầu $y_0$. Ngoài ra, việc thay đổi bước lưới $h$ trong quá trình tính toán diễn ra rất linh hoạt và dễ dàng.
+    \item \textbf{Nhược điểm:} Để đạt được bậc chính xác cao $p$, phương pháp Runge--Kutta đòi hỏi phải đánh giá hàm đạo hàm $f(t, y)$ nhiều lần tại các điểm trung gian bên trong đoạn $[t_n, t_{n+1}]$ (ví dụ: RK4 cần $4$ lần tính hàm $f$ cho mỗi bước lưới). Đối với các bài toán có quy mô lớn hoặc hàm $f$ phức tạp, khối lượng tính toán này là một gánh nặng đáng kể.
+\end{itemize}
+
+\subsubsection{Phương pháp đa bước tuyến tính}
+Khác với phương pháp một bước, phương pháp đa bước tận dụng quan điểm rằng các giá trị xấp xỉ ở những bước trước đó $(t_{n-1}, y_{n-1}), (t_{n-2}, y_{n-2}), \dots$ đã mang sẵn thông tin lịch sử về quỹ đạo của nghiệm. Do đó, thay vì bỏ đi và tính lại từ đầu, ta có thể tái sử dụng chúng.
+
+Một phương pháp đa bước tuyến tính $k$-bước có dạng tổng quát:
+\begin{equation}
+    \sum_{j=0}^{k} \alpha_j y_{n+j} = h \sum_{j=0}^{k} \beta_j f(t_{n+j}, y_{n+j}), \qquad \alpha_k \neq 0, \quad |\alpha_0| + |\beta_0| > 0. \tag{1.7}
+\end{equation}
+
+\textbf{Ưu thế vượt trội về khối lượng tính toán:} 
+Trong công thức (1.7), để bước tới điểm mới $y_{n+k}$, tất cả các giá trị hàm trong quá khứ $f(t_{n+j}, y_{n+j})$ với $j = 0, 1, \dots, k-1$ đều đã được tính và lưu trong bộ nhớ từ các bước lặp trước. 
+\begin{itemize}[label=\null]
+    \item Đối với phương pháp hiện ($\beta_k = 0$), ta chỉ cần đúng \textbf{1 lần} đánh giá hàm $f$ mới tại mỗi bước tính, bất kể bậc chính xác $p$ cao đến đâu.
+    \item Đối với phương pháp ẩn ($\beta_k \neq 0$), khi kết hợp dưới dạng cặp Dự đoán -- Hiệu chỉnh, số lượng đánh giá hàm $f$ cho mỗi bước cũng chỉ từ $1$ đến $2$ lần.
+\end{itemize}
+
+Nhờ sự tiết kiệm tối đa khối lượng tính hàm $f(t, y)$, phương pháp đa bước tuyến tính trở thành công cụ lý tưởng cho các hệ vi phân lớn trong thực tiễn kỹ thuật. Tuy nhiên, đánh đổi lại, phương pháp này \textit{không có khả năng tự khởi động} (bắt buộc phải dùng phương pháp một bước để tạo mồi $k$ giá trị đầu) và việc quản lý tính ổn định số trở nên phức tạp hơn rất nhiều.
+
+
+\subsection{Mục tiêu và phạm vi của báo cáo}
+
+Báo cáo này tập trung đi sâu vào khung lý thuyết, phân tích cấu trúc sai số và khảo sát sự hội tụ của các phương pháp đa bước tuyến tính trong giải tích số. Cụ thể, báo cáo xoay quanh việc chứng minh và làm sáng tỏ định lý tương đương giữa hội tụ và ``nhất quán $+$ ổn định (0-ổn định)'', áp dụng cho một số công thức Adams và đặc biệt là họ công thức vi phân lùi BDF (Backward Differentiation Formulas) cơ bản.
+
+Nội dung và mục tiêu trọng tâm của báo cáo được cụ thể hóa qua $5$ nội dung sau:
+\begin{enumerate}
+    \item Trình bày định nghĩa sai số chặt cụt, tính nhất quán và ổn định (0-ổn định) của phương pháp đa bước.
+    \item Xây dựng đa thức đặc trưng và kiểm tra điều kiện nghiệm cho một số phương pháp cụ thể.
+    \item Giới thiệu và khảo sát các công thức BDF bậc thấp; xác định khi nào các công thức này nhất quán và 0-ổn định.
+    \item Trình bày chứng minh hoặc phác thảo chứng minh định lý hội tụ chính.
+    \item Thực hiện ví dụ số minh họa một phương pháp nhất quán nhưng không hội tụ khi không thoả điều kiện ổn định.
+\end{enumerate}
+
+
+
+%\begin{itemize}
+%    \item Ý tưởng cơ bản của phương pháp một bước (chỉ dùng thông tin tại $t_n$ để tính $t_{n+1}$).
+%    \item Ý tưởng và ưu thế về khối lượng tính toán của phương pháp đa bước tuyến tính (LMM) sử dụng thông tin từ nhiều mốc thời gian quá khứ.
+%\end{itemize}
+
+
+% ==========================================
+\newpage 

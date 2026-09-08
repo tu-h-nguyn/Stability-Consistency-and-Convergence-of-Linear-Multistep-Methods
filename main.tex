@@ -1,0 +1,183 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[T5]{fontenc}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern} % <-- Gói này giúp font Computer Modern hỗ trợ tiếng Việt cực kỳ sắc nét
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\newtheorem{definition}{Định nghĩa}[section]
+\newtheorem{theorem}{Định lý}[section]
+\usepackage{pgfkeys}
+
+% Căn lề trang chuẩn báo cáo học thuật
+\usepackage{geometry}
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+% Thiết lập độ giãn dòng 1.25 giống ảnh mẫu
+\usepackage{setspace}
+\setstretch{1.25}
+\usepackage{float}
+\usepackage{booktabs}
+% Định nghĩa bảng màu học thuật
+\usepackage{xcolor}
+\definecolor{titleblue}{RGB}{35, 75, 135} % Màu xanh chuẩn của các đầu mục
+\definecolor{linkblue}{RGB}{0, 102, 204}
+
+% Định dạng màu sắc và font chữ cho các cấp tiêu đề (Section, Subsection)
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries\color{titleblue}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{titleblue}}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\normalfont\large\bfseries\color{titleblue}}{\thesubsubsection.}{0.5em}{}
+
+% Tối ưu khoảng cách giữa các mục trong danh sách bullet (itemize)
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*, itemsep=0.4em, topsep=0.3em}
+
+% code
+\usepackage{xcolor}
+\usepackage{listings}
+
+\definecolor{codegreen}{RGB}{0,120,0}
+\definecolor{codegray}{RGB}{110,110,110}
+\definecolor{codeblue}{RGB}{0,0,180}
+\definecolor{backcolour}{RGB}{248,248,248}
+% Định nghĩa đúng 2 mã màu lấy từ ảnh mẫu
+\definecolor{XanhTieuDe}{RGB}{0, 102, 34}    % Xanh lá đậm cho viền và tiêu đề
+\definecolor{XanhNen}{RGB}{234, 245, 238}    % Xanh lá nhạt cho nền nội dung
+
+\lstdefinestyle{MatlabStyle}{
+    language=Matlab,
+    backgroundcolor=\color{backcolour},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{codegreen}\itshape,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{codegray},
+    stepnumber=1,
+    numbersep=10pt,
+    frame=single,
+    framesep=8pt,
+    rulecolor=\color{gray},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=4,
+    columns=fullflexible,
+    keepspaces=true
+}
+
+
+% Cấu hình siêu liên kết mục lục
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titleblue,
+    filecolor=magenta,      
+    urlcolor=linkblue,
+}
+
+\usepackage[most]{tcolorbox}
+\newtcolorbox{baitapbox}[1]{
+  colback=blue!5, colframe=blue!60!black, coltitle=white, 
+  fonttitle=\bfseries, enhanced, title=#1,
+}
+
+\newtcolorbox{vidu}[1]{
+  colback=XanhNen, 
+  colframe=XanhTieuDe, 
+  coltitle=white,
+  fonttitle=\bfseries, 
+  title=#1
+}
+
+\newtcolorbox{bode}[1]{ 
+	enhanced, 
+	colback=red!5!white, 
+	colframe=red, 
+	boxrule=0.5pt,
+	arc=2mm,
+	title={#1}, 
+	fonttitle=\bfseries, 
+	colbacktitle=red,
+	attach boxed title to top left={xshift=5mm, yshift=-2.5mm}, 
+	boxed title style={arc=3mm,, size=small}
+}
+
+\title{\color{titleblue}\textbf{DÀN BÀI CHI TIẾT BÁO CÁO (BẢN CHUẨN HÓA)}\\[0.5em]
+\Large \textbf{PHƯƠNG PHÁP ĐA BƯỚC TUYẾN TÍNH}\\[0.3em]
+\large \textit{\color{black}Phân tích hệ thống Sai số, tính nhất quán, ổn định và sự hội tụ}}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ==========================================
+\newpage
+\section*{Lời cảm ơn}
+
+Trước hết, nhóm chúng em xin bày tỏ lòng biết ơn chân thành đến Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia Thành phố Hồ Chí Minh đã tạo điều kiện thuận lợi về môi trường học tập, cơ sở vật chất và chương trình đào tạo để chúng em có cơ hội tiếp cận, nghiên cứu môn học \textit{Giải tích số cho Phương trình vi phân}.
+
+Đặc biệt, chúng em xin gửi lời cảm ơn sâu sắc đến Thầy TS. Nguyễn Đăng Khoa, giảng viên trực tiếp phụ trách môn học. Trong suốt quá trình học tập và thực hiện báo cáo, thầy đã tận tình truyền đạt kiến thức chuyên môn, định hướng phương pháp nghiên cứu, đồng thời luôn sẵn sàng giải đáp những thắc mắc và góp ý quý báu. Những hướng dẫn của thầy là nguồn động viên và là nền tảng quan trọng giúp chúng em hoàn thành báo cáo này.
+
+Bên cạnh đó, chúng em cũng xin trân trọng cảm ơn các tác giả của những giáo trình, sách chuyên khảo, bài báo khoa học và các tài liệu tham khảo đã được sử dụng trong quá trình thực hiện báo cáo. Những tài liệu này đã cung cấp cơ sở lý thuyết và nguồn tư liệu quý giá, giúp chúng em có cái nhìn đầy đủ và hệ thống hơn về nội dung nghiên cứu.
+
+Mặc dù đã cố gắng hoàn thành báo cáo một cách tốt nhất, do kiến thức và kinh nghiệm còn hạn chế nên báo cáo khó tránh khỏi những thiếu sót. Chúng em rất mong nhận được những ý kiến đóng góp và nhận xét từ quý thầy để tiếp tục hoàn thiện kiến thức và nâng cao kỹ năng nghiên cứu.
+
+\vspace{0.5cm}
+\begin{flushright}
+\textbf{Nhóm thực hiện}
+\end{flushright}
+
+\newpage
+\section*{Lời nói đầu}
+Phương trình vi phân thường là công cụ nền tảng mô tả cho vô số hiện tượng trong khoa học tự nhiên, kỹ thuật và kinh tế: từ chuyển động cơ học, phản ứng hoá học, mạch điện, đến các mô hình quần thể sinh học và tài chính. Tuy nhiên, phần lớn các bài toán giá trị đầu xuất hiện trong thực tế không có nghiệm hiển, buộc ta phải tìm đến các phương pháp số để xấp xỉ nghiệm.
+
+Trong số các lớp phương pháp số giải bài toán giá trị đầu:
+\[
+    y'(t) = f(t,y(t)), \qquad y(t_0) = y_0,
+\]
+
+Phương pháp đa bước tuyến tính - LMM là một lớp phương pháp quan trọng nhờ khả năng khai thác thông tin từ nhiều bước tính trước để nâng cao hiệu quả tính toán. Lý thuyết của LMM cũng là một trong những nền tảng của giải tích số hiện đại, đặc biệt thông qua các kết quả về tính nhất quán, tính ổn định và tính hội tụ.
+
+Năm 1956, Germund Dahlquist đã thiết lập một kết quả cơ bản trong lý thuyết phương pháp đa bước tuyến tính, thường được gọi là định lý tương đương Dahlquist. Định lý phát biểu rằng: \textit{``Một phương pháp đa bước tuyến tính hội tụ khi và chỉ khi nó nhất quán và $0$-ổn định''}.
+
+Định lý này chỉ ra rằng tính hội tụ của một phương pháp đa bước tuyến tính có thể được đặc trưng hoàn toàn bởi hai tính chất cơ bản là tính nhất quán và $0$-ổn định. Vì hai tính chất này có thể được kiểm tra trực tiếp từ cấu trúc của phương pháp, kết quả trên đóng vai trò quan trọng trong việc phân tích và xây dựng các phương pháp số.
+
+Báo cáo này trình bày một cách hệ thống các khái niệm về tính nhất quán, $0$-ổn định và tính hội tụ của phương pháp đa bước tuyến tính, đồng thời giới thiệu nội dung và ý nghĩa của định lý tương đương Dahlquist. Bên cạnh phần lý thuyết, báo cáo cũng trình bày các ví dụ minh họa cho họ phương pháp đa bước tuyến tính phổ biến Backward Differentiation Formulas (BDF).
+
+Nhóm chúng em xin chân thành cảm ơn thầy TS.Nguyễn Đăng Khoa đã hướng dẫn và góp ý trong suốt quá trình thực hiện báo cáo này.
+
+\newpage
+\input{Sections/section_1}
+\input{Sections/section_2}
+\newpage
+\input{Sections/section_3}
+\newpage
+\input{Sections/section_4}
+\newpage
+
+\renewcommand{\refname}{Tài liệu tham khảo}
+\begin{thebibliography}{3}
+
+\bibitem{Atkinson2009}
+K. Atkinson, W. Han, and D. Stewart,
+\textit{Numerical Solution of Ordinary Differential Equations},
+John Wiley \& Sons, 2009.
+
+\bibitem{Hairer1993}
+E. Hairer, S. P. N{\o}rsett, and G. Wanner,
+\textit{Solving Ordinary Differential Equations I: Nonstiff Problems},
+2nd ed., Springer, 1993.
+
+\bibitem{Suli2022}
+E. S\"uli,
+\textit{Numerical Solution of Ordinary Differential Equations},
+Lecture Notes, University of Oxford, 2022.
+
+\end{thebibliography}
+\end{document}
