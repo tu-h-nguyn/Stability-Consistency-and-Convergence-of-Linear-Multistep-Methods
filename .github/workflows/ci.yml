@@ -70,7 +70,7 @@ jobs:
             echo "::warning::figures/ differs from the committed version; run 'make figures' and commit the result. (PNG rendering also varies between matplotlib versions.)"
             git diff --stat -- figures/
           fi
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: figures
           path: figures/
@@ -97,7 +97,7 @@ jobs:
         run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
       - name: Build the slides
         run: cd slides && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: pdf
           path: |
