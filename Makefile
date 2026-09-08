@@ -4,12 +4,13 @@
 #   make slides     build the presentation
 #   make figures    regenerate every figure from the Python code
 #   make test       run the test suite
+#   make matlab     run the MATLAB scripts through Octave and check them
 #   make all        everything above
 
 PYTHON  ?= python3
 LATEXMK ?= latexmk -pdf -interaction=nonstopmode -halt-on-error
 
-.PHONY: all report slides figures test lint clean help
+.PHONY: all report slides figures test matlab lint clean help
 
 all: figures test report slides
 
@@ -24,6 +25,9 @@ figures:
 
 test:
 	cd code && $(PYTHON) -m pytest tests -q
+
+matlab:
+	./matlab/verify.sh
 
 lint:
 	$(PYTHON) -m compileall -q code

@@ -38,6 +38,16 @@ jobs:
           name: figures
           path: figures/
 
+  matlab:
+    name: MATLAB scripts (Octave)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Octave
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq octave
+      - name: Run the MATLAB scripts and check them against the report
+        run: ./matlab/verify.sh
+
   report:
     name: Build the LaTeX report
     runs-on: ubuntu-latest

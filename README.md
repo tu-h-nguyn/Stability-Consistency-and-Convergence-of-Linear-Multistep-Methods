@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-80%20passed-brightgreen.svg)](code/tests)
+[![Tests](https://img.shields.io/badge/tests-85%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (45 trang)](slides/main.pdf)**
@@ -129,8 +129,9 @@ python -m lmm ab3 --convergence               # đo bậc hội tụ thực nghi
 Hoặc dùng `make` từ thư mục gốc:
 
 ```bash
-make figures   # sinh lại toàn bộ hình vẽ + figures/RESULTS.md
-make test      # chạy 80 test
+make figures   # sinh lại toàn bộ hình vẽ, bảng LaTeX và figures/RESULTS.md
+make test      # chạy 85 test Python
+make matlab    # chạy mã MATLAB bằng Octave và đối chiếu với báo cáo
 make report    # biên dịch main.pdf (cần LaTeX)
 ```
 
@@ -199,8 +200,11 @@ Mỗi script tự chạy độc lập và in ra bảng số kèm hình vẽ.
 | `ex06_dahlquist_barrier.py` | Rào cản Dahlquist và giới hạn $k \le 6$ | `fig06_dahlquist_barrier.png` |
 | `ex07_report_tables.py` | Sinh các bảng LaTeX mà báo cáo `\input` | `Sections/generated/*.tex` |
 
-Bảng số của `ex01`/`ex02` **trùng khớp từng chữ số** với bảng MATLAB trong báo cáo —
-hai cài đặt độc lập cho cùng một kết quả:
+### Kiểm chứng chéo ba chiều
+
+Cùng một bài toán được giải bằng **hai cài đặt hoàn toàn độc lập** — mã MATLAB gốc
+trong báo cáo, và thư viện Python với bộ giải Newton riêng — rồi đối chiếu với **bảng
+số đã in trong PDF**. Cả ba trùng nhau đến từng chữ số có nghĩa:
 
 | $t$ | nghiệm chính xác | phương pháp A | sai số |
 |---:|---:|---:|---:|
@@ -208,6 +212,13 @@ hai cài đặt độc lập cho cùng một kết quả:
 | 1.0 | 3.678794e-01 | −6.677259e+00 | 7.045e+00 |
 | 4.0 | 1.831564e-02 | −3.872979e+22 | 3.873e+22 |
 | 6.0 | 2.478752e-03 | −1.206376e+37 | 1.206e+37 |
+
+Việc đối chiếu này được tự động hoá từ cả hai phía và chạy trong CI:
+
+```bash
+make matlab   # matlab/verify.sh chạy 3 script bằng Octave, so với số liệu báo cáo
+make test     # code/tests/test_report_reproduction.py so cùng số liệu đó với lmm
+```
 
 <p align="center">
   <img src="figures/fig03_root_condition.png" width="100%" alt="Điều kiện nghiệm Dahlquist">
@@ -223,7 +234,7 @@ hai cài đặt độc lập cho cùng một kết quả:
 
 ```bash
 cd code && python -m pytest tests -q
-# 80 passed
+# 85 passed
 ```
 
 Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các phát biểu toán học**:
@@ -235,7 +246,8 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 - nghiệm bội trên đường tròn đơn vị ($\rho(z)=(z-1)^2$) bị bắt lỗi đúng;
 - rào cản Dahlquist thứ nhất và thứ hai (BDF3 không A-ổn định);
 - BDF2 vượt qua bài toán cứng ở bước lưới mà AB2 nổ tung;
-- quy tắc hình thang giữ nguyên biên độ dao động điều hoà sau 200 đơn vị thời gian.
+- quy tắc hình thang giữ nguyên biên độ dao động điều hoà sau 200 đơn vị thời gian;
+- **bảng số in trong báo cáo** được tái tạo lại đúng đến 6 chữ số có nghĩa.
 
 ---
 
@@ -259,12 +271,12 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 │   │   ├── plotting.py       # phong cách đồ hoạ dùng chung
 │   │   └── __main__.py       # giao diện dòng lệnh
 │   ├── experiments/          # 7 thí nghiệm + run_all.py
-│   └── tests/                # 80 test
+│   └── tests/                # 85 test
 │
-├── matlab/                   # mã MATLAB gốc trích từ báo cáo, chạy được độc lập
+├── matlab/                   # mã MATLAB gốc trích từ báo cáo + verify.sh (Octave)
 ├── figures/                  # hình sinh tự động + RESULTS.md
 ├── Makefile
-└── .github/workflows/ci.yml  # test + kiểm tra hình không lỗi thời + build PDF
+└── .github/workflows/ci.yml  # test Python, kiểm mã MATLAB, build PDF
 ```
 
 CI chạy toàn bộ test, sinh lại hình vẽ và bảng LaTeX, báo lỗi nếu `Sections/generated/`
@@ -329,11 +341,16 @@ Jacobian).
 
 Nothing is hard-coded: BDF coefficients come from the backward-difference construction
 and Adams coefficients from exact integration of the Lagrange interpolant, so classical
-results are *measured* rather than asserted. The 80-test suite verifies that observed
+results are *measured* rather than asserted. The 85-test suite verifies that observed
 convergence rates match the theoretical orders, that BDF is zero-stable exactly for
 $k \le 6$, that the first Dahlquist barrier holds across the catalogue, and that the two
 deliberately non-zero-stable methods of Chapter 4 diverge at every step size — the
 numerical face of the theorem that consistency alone is never enough.
+
+The report's published tables are reproduced from both sides: `matlab/verify.sh` runs
+the original MATLAB listings through Octave and `code/tests/test_report_reproduction.py`
+checks the same figures against the Python library. Two independent implementations and
+the printed PDF agree to six significant digits.
 
 ```bash
 pip install -r requirements.txt
