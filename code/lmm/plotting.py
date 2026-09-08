@@ -1,4 +1,8 @@
-"""Shared figure style so every plot in the project reads as one system."""
+"""Shared figure style so every plot in the project reads as one system.
+
+Font sizes are deliberately generous: the same PNGs are embedded in the A4
+report at ``\\textwidth``, which scales a 10-inch figure down to roughly 60%.
+"""
 
 from __future__ import annotations
 
@@ -28,10 +32,10 @@ def use_project_style() -> None:
             "savefig.dpi": 160,
             "savefig.bbox": "tight",
             "font.family": "DejaVu Sans",
-            "font.size": 10,
-            "axes.titlesize": 11,
+            "font.size": 11.5,
+            "axes.titlesize": 12.5,
             "axes.titleweight": "bold",
-            "axes.labelsize": 10,
+            "axes.labelsize": 11.5,
             "axes.edgecolor": MUTED,
             "axes.labelcolor": INK,
             "axes.titlecolor": INK,
@@ -43,7 +47,7 @@ def use_project_style() -> None:
             "grid.color": GRID,
             "grid.linewidth": 0.7,
             "legend.frameon": False,
-            "legend.fontsize": 9,
+            "legend.fontsize": 10.5,
             "xtick.color": MUTED,
             "ytick.color": MUTED,
             "xtick.labelcolor": INK,

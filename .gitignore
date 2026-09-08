@@ -10,9 +10,13 @@
 *.out
 *.synctex.gz
 *.toc
+*.nav
+*.snm
+*.vrb
 build/
-main.pdf
-slides/main.pdf
+
+# main.pdf and slides/main.pdf are committed on purpose: they are the
+# deliverables of this project and should be readable without a TeX install.
 
 # Python
 __pycache__/

@@ -1,0 +1,27 @@
+% !!! TỆP NÀY ĐƯỢC SINH TỰ ĐỘNG — MỌI CHỈNH SỬA THỦ CÔNG SẼ BỊ GHI ĐÈ !!!
+% Nguồn: code/experiments/ex07_report_tables.py  (chạy lại bằng: make figures)
+\begin{table}[H]
+\centering
+\caption{Tổng hợp tính chất của các phương pháp đa bước tuyến tính, suy ra trực tiếp từ bộ hệ số $(\alpha_j,\beta_j)$. Hai phương pháp cuối nhất quán nhưng không 0-ổn định, do đó không hội tụ. Hằng số sai số được tính với quy ước chuẩn hoá $\alpha_k = 1$.}
+\label{tab:method-summary}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lccccccc}
+\toprule
+Phương pháp & $k$ & Loại & $p$ & $C_{p+1}$ & Nhất quán & 0-ổn định & Hội tụ\\
+\midrule
+Euler hiện & 1 & hiện & 1 & $\tfrac{1}{2}$ & \checkmark & \checkmark & \checkmark\\
+BDF1 & 1 & ẩn & 1 & $-\tfrac{1}{2}$ & \checkmark & \checkmark & \checkmark\\
+Quy tắc hình thang (AM1) & 1 & ẩn & 2 & $-\tfrac{1}{12}$ & \checkmark & \checkmark & \checkmark\\
+Quy tắc điểm giữa & 2 & hiện & 2 & $\tfrac{1}{3}$ & \checkmark & \checkmark & \checkmark\\
+Công thức Simpson & 2 & ẩn & 4 & $-\tfrac{1}{90}$ & \checkmark & \checkmark & \checkmark\\
+AB2 & 2 & hiện & 2 & $\tfrac{5}{12}$ & \checkmark & \checkmark & \checkmark\\
+AB3 & 3 & hiện & 3 & $\tfrac{3}{8}$ & \checkmark & \checkmark & \checkmark\\
+AM2 & 2 & ẩn & 3 & $-\tfrac{1}{24}$ & \checkmark & \checkmark & \checkmark\\
+BDF2 & 2 & ẩn & 2 & $-\tfrac{2}{9}$ & \checkmark & \checkmark & \checkmark\\
+BDF3 & 3 & ẩn & 3 & $-\tfrac{3}{22}$ & \checkmark & \checkmark & \checkmark\\
+BDF6 & 6 & ẩn & 6 & $-\tfrac{20}{343}$ & \checkmark & \checkmark & \checkmark\\
+Phương pháp A & 2 & hiện & 3 & $\tfrac{1}{6}$ & \checkmark & $\times$ & $\times$\\
+Phương pháp B & 2 & ẩn & 1 & $4$ & \checkmark & $\times$ & $\times$\\
+\bottomrule
+\end{tabular}
+\end{table}

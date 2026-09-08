@@ -20,6 +20,7 @@ import ex03_root_condition
 import ex04_convergence
 import ex05_stability_regions
 import ex06_dahlquist_barrier
+import ex07_report_tables
 from lmm import __version__
 from lmm.analysis import method_table
 from lmm.catalog import CLASSIC_METHODS
@@ -32,6 +33,7 @@ EXPERIMENTS = [
     ("Bậc hội tụ đo được so với lý thuyết", ex04_convergence),
     ("Miền ổn định tuyệt đối", ex05_stability_regions),
     ("Rào cản Dahlquist và giới hạn k ≤ 6 của BDF", ex06_dahlquist_barrier),
+    ("Bảng LaTeX cho báo cáo", ex07_report_tables),
 ]
 
 SHOWCASE_ORDER = [

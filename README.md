@@ -2,8 +2,10 @@
 
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-68%20passed-brightgreen.svg)](code/tests)
+[![Tests](https://img.shields.io/badge/tests-80%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+
+📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (45 trang)](slides/main.pdf)**
 
 > **Định lý tương đương Dahlquist (1956).** Một phương pháp đa bước tuyến tính hội tụ
 > **khi và chỉ khi** nó vừa nhất quán, vừa 0-ổn định.
@@ -38,7 +40,7 @@ không cứu nổi một phương pháp không 0-ổn định.*
 - [Các thí nghiệm số](#các-thí-nghiệm-số)
 - [Kiểm chứng bằng test](#kiểm-chứng-bằng-test)
 - [Cấu trúc dự án](#cấu-trúc-dự-án)
-- [Biên dịch báo cáo](#biên-dịch-báo-cáo)
+- [Báo cáo và cách biên dịch](#báo-cáo-và-cách-biên-dịch)
 - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 - [English summary](#english-summary)
 
@@ -51,14 +53,18 @@ Bảng dưới do `code/experiments/run_all.py` sinh ra, không nhập tay
 
 | phương pháp | k | loại | bậc p | $C_{p+1}$ | nhất quán | 0-ổn định | hội tụ |
 |---|---:|---|---:|---:|:---:|:---:|:---:|
-| Euler hiện | 1 | hiện | 1 | +0.5 | ✅ | ✅ | ✅ |
-| Quy tắc hình thang | 1 | ẩn | 2 | −0.0833 | ✅ | ✅ | ✅ |
-| Công thức Simpson | 2 | ẩn | 4 | −0.0111 | ✅ | ✅ | ✅ |
-| AB3 | 3 | hiện | 3 | +0.375 | ✅ | ✅ | ✅ |
-| AM3 | 3 | ẩn | 4 | −0.0264 | ✅ | ✅ | ✅ |
-| BDF6 | 6 | ẩn | 6 | −0.1429 | ✅ | ✅ | ✅ |
-| **Phương pháp A** | 2 | hiện | **3** | +0.1667 | ✅ | ❌ | ❌ |
-| **Phương pháp B** | 2 | ẩn | 1 | +4 | ✅ | ❌ | ❌ |
+| Euler hiện | 1 | hiện | 1 | $1/2$ | ✅ | ✅ | ✅ |
+| Quy tắc hình thang | 1 | ẩn | 2 | $-1/12$ | ✅ | ✅ | ✅ |
+| Công thức Simpson | 2 | ẩn | 4 | $-1/90$ | ✅ | ✅ | ✅ |
+| AB3 | 3 | hiện | 3 | $3/8$ | ✅ | ✅ | ✅ |
+| AM2 | 2 | ẩn | 3 | $-1/24$ | ✅ | ✅ | ✅ |
+| BDF2 | 2 | ẩn | 2 | $-2/9$ | ✅ | ✅ | ✅ |
+| BDF6 | 6 | ẩn | 6 | $-20/343$ | ✅ | ✅ | ✅ |
+| **Phương pháp A** | 2 | hiện | **3** | $1/6$ | ✅ | ❌ | ❌ |
+| **Phương pháp B** | 2 | ẩn | 1 | $4$ | ✅ | ❌ | ❌ |
+
+Hằng số sai số $C_{p+1}$ tính với quy ước chuẩn hoá $\alpha_k = 1$ (nên so sánh được
+giữa các phương pháp), và trùng khớp bảng chuẩn trong Hairer–Nørsett–Wanner.
 
 Bốn kết luận rút ra được từ mã nguồn:
 
@@ -124,7 +130,7 @@ Hoặc dùng `make` từ thư mục gốc:
 
 ```bash
 make figures   # sinh lại toàn bộ hình vẽ + figures/RESULTS.md
-make test      # chạy 68 test
+make test      # chạy 80 test
 make report    # biên dịch main.pdf (cần LaTeX)
 ```
 
@@ -191,6 +197,7 @@ Mỗi script tự chạy độc lập và in ra bảng số kèm hình vẽ.
 | `ex04_convergence.py` | Bậc hội tụ đo được so với lý thuyết | `fig04_convergence.png` |
 | `ex05_stability_regions.py` | Miền ổn định tuyệt đối, vì sao BDF hợp bài toán cứng | `fig05_stability_regions.png` |
 | `ex06_dahlquist_barrier.py` | Rào cản Dahlquist và giới hạn $k \le 6$ | `fig06_dahlquist_barrier.png` |
+| `ex07_report_tables.py` | Sinh các bảng LaTeX mà báo cáo `\input` | `Sections/generated/*.tex` |
 
 Bảng số của `ex01`/`ex02` **trùng khớp từng chữ số** với bảng MATLAB trong báo cáo —
 hai cài đặt độc lập cho cùng một kết quả:
@@ -216,12 +223,12 @@ hai cài đặt độc lập cho cùng một kết quả:
 
 ```bash
 cd code && python -m pytest tests -q
-# 68 passed
+# 80 passed
 ```
 
 Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các phát biểu toán học**:
 
-- hệ số BDF1–6, AB1–4, AM1–3 khớp bảng chuẩn; `bdf(1)` đúng bằng Euler ẩn, `adams_moulton(1)` đúng bằng quy tắc hình thang;
+- hệ số BDF1–6, AB1–4, AM1–3 và **hằng số sai số** khớp bảng chuẩn; `bdf(1)` đúng bằng Euler ẩn, `adams_moulton(1)` đúng bằng quy tắc hình thang;
 - bậc hội tụ **đo được** khớp bậc lý thuyết (sai lệch < 0.25) cho 8 phương pháp;
 - phương pháp A và B nổ với **mọi** bước lưới — giảm $h$ không cứu được;
 - BDF 0-ổn định với $k \le 6$, mất 0-ổn định với $k = 7, 8$;
@@ -236,10 +243,11 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 
 ```
 .
-├── main.tex                  # báo cáo LaTeX (tiếng Việt)
+├── main.tex, main.pdf        # báo cáo LaTeX (tiếng Việt), 63 trang
 ├── Sections/                 # 4 chương (section_1..4) + một bản nháp chưa dùng
+│   └── generated/            # bảng LaTeX sinh từ code — KHÔNG sửa tay
 ├── images/                   # hình gốc trong báo cáo
-├── slides/                   # bản trình bày Beamer
+├── slides/                   # bản trình bày Beamer, 45 trang
 │
 ├── code/
 │   ├── lmm/                  # thư viện
@@ -247,10 +255,11 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 │   │   ├── catalog.py        # BDF / Adams sinh tự động + các phương pháp kinh điển
 │   │   ├── problems.py       # bài toán mẫu kèm nghiệm chính xác
 │   │   ├── analysis.py       # nghiên cứu hội tụ, bảng tổng hợp
+│   │   ├── latex.py          # sinh bảng LaTeX cho báo cáo
 │   │   ├── plotting.py       # phong cách đồ hoạ dùng chung
 │   │   └── __main__.py       # giao diện dòng lệnh
-│   ├── experiments/          # 6 thí nghiệm + run_all.py
-│   └── tests/                # 68 test
+│   ├── experiments/          # 7 thí nghiệm + run_all.py
+│   └── tests/                # 80 test
 │
 ├── matlab/                   # mã MATLAB gốc trích từ báo cáo, chạy được độc lập
 ├── figures/                  # hình sinh tự động + RESULTS.md
@@ -258,21 +267,36 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 └── .github/workflows/ci.yml  # test + kiểm tra hình không lỗi thời + build PDF
 ```
 
-CI chạy toàn bộ test, sinh lại tất cả hình vẽ rồi so sánh với bản đã commit (cảnh báo
-nếu lệch), và biên dịch cả `main.pdf` lẫn `slides/main.pdf` trong container TeX Live.
+CI chạy toàn bộ test, sinh lại hình vẽ và bảng LaTeX, báo lỗi nếu `Sections/generated/`
+không còn khớp với code, rồi biên dịch cả `main.pdf` lẫn `slides/main.pdf` trong
+container TeX Live.
 
 ---
 
-## Biên dịch báo cáo
+## Báo cáo và cách biên dịch
+
+Báo cáo gồm 4 chương, 63 trang:
+
+| Chương | Nội dung |
+|---|---|
+| 1 | Kiến thức chuẩn bị: Taylor, Lipschitz, Picard–Lindelöf, phương trình sai phân, nội suy Lagrange; bài toán giá trị đầu và sự cần thiết của phương pháp số |
+| 2 | Công thức tổng quát của LMM, hai đa thức đặc trưng, toán tử sai phân tuyến tính, phân loại sai số; tính nhất quán, ổn định, hội tụ và **chứng minh định lý tương đương Dahlquist** |
+| 3 | Họ BDF: xây dựng từ nội suy sai phân lùi, khảo sát BDF1–BDF3, chứng minh ranh giới $k \le 6$, **kiểm chứng bằng số** và miền ổn định tuyệt đối |
+| 4 | Ba ví dụ số: hai phương pháp nhất quán nhưng không 0-ổn định (phân kỳ), và một nghiên cứu hội tụ xác nhận chiều thuận của định lý |
 
 ```bash
-make report    # -> main.pdf
-make slides    # -> slides/main.pdf
+make report    # -> main.pdf   (63 trang)
+make slides    # -> slides/main.pdf (45 trang)
 ```
 
 Cần một bản phân phối TeX có `babel-vietnamese`, `tcolorbox`, `listings`, `titlesec`
-(TeX Live đầy đủ là đủ). Trên Overleaf: upload cả thư mục, đặt `main.tex` làm tài liệu
-chính, biên dịch bằng pdfLaTeX.
+(TeX Live đầy đủ là đủ). Cả hai tài liệu biên dịch **không còn cảnh báo tham chiếu
+thiếu**. Trên Overleaf: upload cả thư mục, đặt `main.tex` làm tài liệu chính, biên dịch
+bằng pdfLaTeX.
+
+Ba bảng số trong báo cáo (`Sections/generated/`) do `make figures` sinh ra từ chính thư
+viện `lmm`, nên các con số in trong PDF không thể lệch khỏi kết quả mà bộ test kiểm
+chứng.
 
 ---
 
@@ -305,7 +329,7 @@ Jacobian).
 
 Nothing is hard-coded: BDF coefficients come from the backward-difference construction
 and Adams coefficients from exact integration of the Lagrange interpolant, so classical
-results are *measured* rather than asserted. The 68-test suite verifies that observed
+results are *measured* rather than asserted. The 80-test suite verifies that observed
 convergence rates match the theoretical orders, that BDF is zero-stable exactly for
 $k \le 6$, that the first Dahlquist barrier holds across the catalogue, and that the two
 deliberately non-zero-stable methods of Chapter 4 diverge at every step size — the

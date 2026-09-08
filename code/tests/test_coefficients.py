@@ -63,3 +63,45 @@ def test_bdf_order_equals_step_count(k):
 def test_adams_orders(k):
     assert adams_bashforth(k).order == k
     assert adams_moulton(k).order == k + 1
+
+
+# Error constants under the canonical normalisation alpha_k = 1, as tabulated in
+# Hairer-Norsett-Wanner and Suli.
+NORMALISED_ERROR_CONSTANTS = {
+    "euler": 1 / 2,
+    "backward-euler": -1 / 2,
+    "trapezoid": -1 / 12,
+    "midpoint": 1 / 3,
+    "simpson": -1 / 90,
+    "ab2": 5 / 12,
+    "ab3": 3 / 8,
+    "am2": -1 / 24,
+    "bdf2": -2 / 9,
+    "bdf3": -3 / 22,
+    "method-a": 1 / 6,
+}
+
+
+@pytest.mark.parametrize("key", sorted(NORMALISED_ERROR_CONSTANTS))
+def test_normalised_error_constants_match_reference(key):
+    from lmm.catalog import get
+
+    method = get(key)
+    assert method.normalised().error_constant == pytest.approx(
+        NORMALISED_ERROR_CONSTANTS[key]
+    )
+
+
+def test_error_constant_is_scale_invariant_after_normalisation():
+    """Scaling every coefficient must not change the normalised constant."""
+    from lmm.catalog import bdf
+    from lmm.core import LinearMultistepMethod
+
+    base = bdf(2)
+    scaled = LinearMultistepMethod(
+        tuple(7.5 * a for a in base.alpha), tuple(7.5 * b for b in base.beta), "scaled"
+    )
+    assert scaled.order == base.order
+    assert scaled.normalised().error_constant == pytest.approx(
+        base.normalised().error_constant
+    )

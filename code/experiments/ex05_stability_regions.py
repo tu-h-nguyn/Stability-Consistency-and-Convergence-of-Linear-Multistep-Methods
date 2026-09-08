@@ -40,7 +40,7 @@ def figure(explicit, implicit):
     use_project_style()
     import matplotlib.pyplot as plt
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.6))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.6))
 
     for i, m in enumerate(explicit):
         locus = m.boundary_locus(1200)

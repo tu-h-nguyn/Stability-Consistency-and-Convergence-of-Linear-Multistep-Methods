@@ -82,14 +82,16 @@ def convergence_study(
 def method_table(methods) -> str:
     """A Markdown table of the structural properties of several methods."""
     head = (
-        "| phương pháp | k | loại | bậc p | C_{p+1} | nhất quán | 0-ổn định | hội tụ |\n"
+        "| phương pháp | k | loại | bậc p | C_{p+1} (α_k=1) | nhất quán | 0-ổn định | hội tụ |\n"
         "|---|---:|---|---:|---:|:---:|:---:|:---:|"
     )
     rows = []
     for m in methods:
+        # Scale-independent convention: coefficients normalised so that alpha_k = 1.
+        constant = m.normalised().error_constant
         rows.append(
             f"| {m.name} | {m.k} | {'hiện' if m.is_explicit else 'ẩn'} | {m.order} | "
-            f"{m.error_constant:+.4g} | {'✅' if m.is_consistent else '❌'} | "
+            f"{constant:+.4g} | {'✅' if m.is_consistent else '❌'} | "
             f"{'✅' if m.is_zero_stable else '❌'} | {'✅' if m.is_convergent else '❌'} |"
         )
     return head + "\n" + "\n".join(rows)

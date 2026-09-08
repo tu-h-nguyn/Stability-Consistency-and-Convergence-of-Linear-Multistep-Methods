@@ -46,7 +46,7 @@ def figure(sol, exact, err):
     use_project_style()
     import matplotlib.pyplot as plt
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.0))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.1))
 
     ax1.plot(sol.t, symlog(exact), color="#1b1f24", label="nghiệm chính xác $e^{-t}$")
     ax1.plot(sol.t, symlog(sol.y), color=PALETTE[1], ls="--", label="phương pháp A")

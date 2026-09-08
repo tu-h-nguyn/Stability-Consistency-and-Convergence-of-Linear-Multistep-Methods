@@ -178,6 +178,15 @@
   colbacktitle=orange!75!black
 }
 
+% Hộp "Lưu ý" được dùng ở phần BDF nhưng chưa được định nghĩa, khiến slide không
+% biên dịch được. Định nghĩa lại theo đúng kiểu notebox.
+\newtcolorbox{luuy}[1]{
+  title={#1},
+  colback=softyellow,
+  colframe=orange!75!black,
+  colbacktitle=orange!75!black
+}
+
 % =========================================================
 % LENH TAT
 % =========================================================

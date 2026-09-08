@@ -1,0 +1,22 @@
+% !!! TỆP NÀY ĐƯỢC SINH TỰ ĐỘNG — MỌI CHỈNH SỬA THỦ CÔNG SẼ BỊ GHI ĐÈ !!!
+% Nguồn: code/experiments/ex07_report_tables.py  (chạy lại bằng: make figures)
+\begin{table}[H]
+\centering
+\caption{Bán kính lớn nhất trong các nghiệm của $\rho(z)$ đối với họ BDF. Điều kiện nghiệm bị vi phạm kể từ $k=7$, đúng với kết quả cổ điển rằng BDF chỉ 0-ổn định khi $k \leq 6$.}
+\label{tab:bdf-stability}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{cccc}
+\toprule
+$k$ & Bậc $p$ & $\max_i |z_i|$ & Kết luận\\
+\midrule
+1 & 1 & $1.0000$ & 0-ổn định\\
+2 & 2 & $1.0000$ & 0-ổn định\\
+3 & 3 & $1.0000$ & 0-ổn định\\
+4 & 4 & $1.0000$ & 0-ổn định\\
+5 & 5 & $1.0000$ & 0-ổn định\\
+6 & 6 & $1.0000$ & 0-ổn định\\
+7 & 7 & $1.0222$ & \textbf{không 0-ổn định}\\
+8 & 8 & $1.1839$ & \textbf{không 0-ổn định}\\
+\bottomrule
+\end{tabular}
+\end{table}

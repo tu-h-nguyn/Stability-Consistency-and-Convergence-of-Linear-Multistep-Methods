@@ -43,7 +43,7 @@ def figure(radii, orders):
     import matplotlib.pyplot as plt
 
     ks = np.arange(1, K_MAX + 1)
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.2))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.3))
 
     colors = [PALETTE[2] if r <= 1 + 1e-8 else PALETTE[1] for r in radii]
     ax1.bar(ks, radii, color=colors, width=0.62)

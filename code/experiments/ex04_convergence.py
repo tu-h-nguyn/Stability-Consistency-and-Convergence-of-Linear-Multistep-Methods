@@ -44,23 +44,23 @@ def figure(studies, diverging, reference):
     use_project_style()
     import matplotlib.pyplot as plt
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.4))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.4))
 
     for i, cs in enumerate(studies):
         ax1.loglog(cs.steps, cs.errors, "o-", color=PALETTE[i % len(PALETTE)], ms=4,
                    label=f"{cs.method.name} · $p={cs.method.order}$, đo được ${cs.estimated_order:.2f}$")
     ax1.set_xlabel("bước lưới $h$")
     ax1.set_ylabel("sai số toàn cục tại $T$")
-    ax1.set_title("Phương pháp 0-ổn định: sai số giảm đúng bậc lý thuyết")
+    ax1.set_title("Phương pháp 0-ổn định: sai số giảm đúng bậc")
     ax1.legend(loc="lower right")
 
     ax2.loglog(diverging.steps, diverging.errors, "o-", color=PALETTE[1], ms=5,
                label=f"{diverging.method.name} · $p={diverging.method.order}$, không 0-ổn định")
     ax2.loglog(reference.steps, reference.errors, "o-", color=PALETTE[2], ms=4,
                label=f"{reference.method.name} · 0-ổn định, $p={reference.method.order}$")
-    ax2.text(0.03, 0.44,
-             "đường đỏ bị chặn ở ngưỡng tràn số $10^{50}$\ncủa bộ tích phân",
-             transform=ax2.transAxes, color="#6b7480", fontsize=9)
+    # Kept short and high on the axes so it never collides with the legend.
+    ax2.text(0.03, 0.82, "chặn ở ngưỡng tràn số $10^{50}$",
+             transform=ax2.transAxes, color="#6b7480", fontsize=10)
     ax2.set_xlabel("bước lưới $h$")
     ax2.set_ylabel("sai số toàn cục tại $T$")
     ax2.set_title("Bậc cao vô nghĩa nếu thiếu 0-ổn định\n(bài toán $y' = -y$)")

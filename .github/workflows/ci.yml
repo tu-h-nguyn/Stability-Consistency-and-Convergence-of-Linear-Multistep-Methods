@@ -21,6 +21,10 @@ jobs:
         run: cd code && python -m pytest tests -q
       - name: Regenerate every figure and table
         run: python code/experiments/run_all.py
+      - name: Fail if the generated LaTeX tables are stale
+        run: |
+          git diff --exit-code -- Sections/generated/ \
+            || { echo "::error::Sections/generated/ is out of date; run 'make figures' and commit."; exit 1; }
       - name: Report whether the committed figures are stale
         run: |
           if git diff --quiet -- figures/; then

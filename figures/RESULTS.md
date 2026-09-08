@@ -4,7 +4,7 @@ Sinh tự động bởi `code/experiments/run_all.py` (lmm v1.0.0). Không chỉ
 
 ## Bảng tổng hợp các phương pháp
 
-| phương pháp | k | loại | bậc p | C_{p+1} | nhất quán | 0-ổn định | hội tụ |
+| phương pháp | k | loại | bậc p | C_{p+1} (α_k=1) | nhất quán | 0-ổn định | hội tụ |
 |---|---:|---|---:|---:|:---:|:---:|:---:|
 | Euler hiện | 1 | hiện | 1 | +0.5 | ✅ | ✅ | ✅ |
 | Euler ẩn (BDF1) | 1 | ẩn | 1 | -0.5 | ✅ | ✅ | ✅ |
@@ -16,11 +16,11 @@ Sinh tự động bởi `code/experiments/run_all.py` (lmm v1.0.0). Không chỉ
 | AM2 | 2 | ẩn | 3 | -0.04167 | ✅ | ✅ | ✅ |
 | AM3 | 3 | ẩn | 4 | -0.02639 | ✅ | ✅ | ✅ |
 | BDF1 | 1 | ẩn | 1 | -0.5 | ✅ | ✅ | ✅ |
-| BDF2 | 2 | ẩn | 2 | -0.3333 | ✅ | ✅ | ✅ |
-| BDF3 | 3 | ẩn | 3 | -0.25 | ✅ | ✅ | ✅ |
-| BDF4 | 4 | ẩn | 4 | -0.2 | ✅ | ✅ | ✅ |
-| BDF5 | 5 | ẩn | 5 | -0.1667 | ✅ | ✅ | ✅ |
-| BDF6 | 6 | ẩn | 6 | -0.1429 | ✅ | ✅ | ✅ |
+| BDF2 | 2 | ẩn | 2 | -0.2222 | ✅ | ✅ | ✅ |
+| BDF3 | 3 | ẩn | 3 | -0.1364 | ✅ | ✅ | ✅ |
+| BDF4 | 4 | ẩn | 4 | -0.096 | ✅ | ✅ | ✅ |
+| BDF5 | 5 | ẩn | 5 | -0.07299 | ✅ | ✅ | ✅ |
+| BDF6 | 6 | ẩn | 6 | -0.05831 | ✅ | ✅ | ✅ |
 | Phương pháp A | 2 | hiện | 3 | +0.1667 | ✅ | ❌ | ❌ |
 | Phương pháp B | 2 | ẩn | 1 | +4 | ✅ | ❌ | ❌ |
 
@@ -192,4 +192,17 @@ Rao can Dahlquist thu nhat: bac toi da cua phuong phap k buoc 0-on dinh
  5    5    6    5          6
  6    6    7    6          8
   saved  figures/fig06_dahlquist_barrier.png
+```
+
+## Bảng LaTeX cho báo cáo
+
+```
+  BDF1  p = 1, bậc đo được = 1.013
+  BDF2  p = 2, bậc đo được = 2.032
+  BDF3  p = 3, bậc đo được = 3.012
+  AB2   p = 2, bậc đo được = 2.021
+  AM2   p = 3, bậc đo được = 3.007
+  saved  Sections/generated/convergence_table.tex
+  saved  Sections/generated/method_summary.tex
+  saved  Sections/generated/bdf_stability.tex
 ```
