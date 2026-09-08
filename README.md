@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-85%20passed-brightgreen.svg)](code/tests)
+[![Tests](https://img.shields.io/badge/tests-86%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (45 trang)](slides/main.pdf)**
@@ -130,7 +130,7 @@ Hoặc dùng `make` từ thư mục gốc:
 
 ```bash
 make figures   # sinh lại toàn bộ hình vẽ, bảng LaTeX và figures/RESULTS.md
-make test      # chạy 85 test Python
+make test      # chạy 86 test Python
 make matlab    # chạy mã MATLAB bằng Octave và đối chiếu với báo cáo
 make report    # biên dịch main.pdf (cần LaTeX)
 ```
@@ -175,8 +175,9 @@ Những gì thư viện tự suy ra từ $(\alpha, \beta)$:
 | Miền ổn định tuyệt đối | quỹ tích biên $z \mapsto \rho(z)/\sigma(z)$ | `.boundary_locus()` |
 
 **Bộ tích phân** xử lý cả phương pháp hiện lẫn ẩn (Newton với Jacobian sai phân hữu
-hạn), cả bài toán vô hướng lẫn hệ, khởi động bằng nghiệm chính xác hoặc bằng RK4, và
-báo cờ `diverged` thay vì trả về `NaN` khi nghiệm số nổ.
+hạn), cả bài toán vô hướng lẫn hệ, khởi động bằng nghiệm chính xác hoặc bằng RK4. Nó
+không giấu lỗi: cờ `diverged` được bật thay vì trả về `NaN` khi nghiệm số nổ, và
+`newton_failures` đếm những bước mà Newton hết vòng lặp trước khi đạt sai số yêu cầu.
 
 Hệ số của **BDF** và **Adams** được *sinh ra* chứ không chép tay: BDF từ khai triển
 sai phân lùi $\sum_{j\ge 1} \frac{1}{j}\nabla^j Y_{n+k} = h f_{n+k}$, Adams từ tích
@@ -234,7 +235,7 @@ make test     # code/tests/test_report_reproduction.py so cùng số liệu đó
 
 ```bash
 cd code && python -m pytest tests -q
-# 85 passed
+# 86 passed
 ```
 
 Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các phát biểu toán học**:
@@ -271,7 +272,7 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 │   │   ├── plotting.py       # phong cách đồ hoạ dùng chung
 │   │   └── __main__.py       # giao diện dòng lệnh
 │   ├── experiments/          # 7 thí nghiệm + run_all.py
-│   └── tests/                # 85 test
+│   └── tests/                # 86 test
 │
 ├── matlab/                   # mã MATLAB gốc trích từ báo cáo + verify.sh (Octave)
 ├── figures/                  # hình sinh tự động + RESULTS.md
@@ -341,7 +342,7 @@ Jacobian).
 
 Nothing is hard-coded: BDF coefficients come from the backward-difference construction
 and Adams coefficients from exact integration of the Lagrange interpolant, so classical
-results are *measured* rather than asserted. The 85-test suite verifies that observed
+results are *measured* rather than asserted. The 86-test suite verifies that observed
 convergence rates match the theoretical orders, that BDF is zero-stable exactly for
 $k \le 6$, that the first Dahlquist barrier holds across the catalogue, and that the two
 deliberately non-zero-stable methods of Chapter 4 diverge at every step size — the

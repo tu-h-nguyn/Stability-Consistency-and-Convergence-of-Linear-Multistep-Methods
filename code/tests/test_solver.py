@@ -106,3 +106,15 @@ def test_startup_values_are_validated():
         bdf(2).solve(DECAY.f, (0.0, 1.0), 0.1)
     with pytest.raises(ValueError):
         bdf(2).solve(DECAY.f, (0.0, 1.0), 1.0, y0=1.0)
+
+
+def test_newton_failures_are_counted_not_hidden():
+    """A step that runs out of iterations must be reported, not silently accepted."""
+    starved = bdf(2).solve(
+        LOGISTIC.f, LOGISTIC.t_span, 0.05, startup=LOGISTIC.exact, max_newton=1
+    )
+    assert starved.newton_failures > 0
+
+    healthy = bdf(2).solve(LOGISTIC.f, LOGISTIC.t_span, 0.05, startup=LOGISTIC.exact)
+    assert healthy.newton_failures == 0
+    assert healthy.newton_iterations > 0

@@ -63,6 +63,7 @@ class Solution:
     method: "LinearMultistepMethod"
     h: float
     newton_iterations: int = 0
+    newton_failures: int = 0
     diverged: bool = False
 
     @property
@@ -302,6 +303,7 @@ class LinearMultistepMethod:
 
         a_k, b_k = self.alpha[-1], self.beta[-1]
         newton_iters = 0
+        newton_failures = 0
         diverged = False
 
         for n in range(n_steps + 1 - self.k):
@@ -314,8 +316,11 @@ class LinearMultistepMethod:
                 y[m] = rhs / a_k
             else:
                 guess = y[m - 1] + (y[m - 1] - y[m - 2]) if self.k > 1 else y[m - 1].copy()
-                y[m], iters = _newton_step(f, t[m], guess, rhs, a_k, h * b_k, newton_tol, max_newton)
+                y[m], iters, converged = _newton_step(
+                    f, t[m], guess, rhs, a_k, h * b_k, newton_tol, max_newton
+                )
                 newton_iters += iters
+                newton_failures += 0 if converged else 1
 
             if not np.all(np.isfinite(y[m])) or np.max(np.abs(y[m])) > overflow_limit:
                 diverged = True
@@ -324,7 +329,15 @@ class LinearMultistepMethod:
             fvals[m] = np.atleast_1d(np.asarray(f(t[m], y[m]), dtype=float))
 
         out = y[:, 0] if dim == 1 else y
-        return Solution(t=t, y=out, method=self, h=h, newton_iterations=newton_iters, diverged=diverged)
+        return Solution(
+            t=t,
+            y=out,
+            method=self,
+            h=h,
+            newton_iterations=newton_iters,
+            newton_failures=newton_failures,
+            diverged=diverged,
+        )
 
     def _startup_values(self, f, t, h, startup, y0) -> np.ndarray:
         if startup is None:
@@ -363,14 +376,19 @@ class LinearMultistepMethod:
 # helpers
 # ----------------------------------------------------------------------
 def _newton_step(f, t_new, guess, rhs, a_k, hb_k, tol, max_iter):
-    """Solve ``a_k * Y - h*b_k*f(t_new, Y) = rhs`` by Newton with an FD Jacobian."""
+    """Solve ``a_k * Y - h*b_k*f(t_new, Y) = rhs`` by Newton with an FD Jacobian.
+
+    Returns the iterate, the number of iterations spent, and whether the
+    residual test was actually met -- a caller that ignores the last flag would
+    not notice a step that quietly failed to converge.
+    """
     y = np.array(guess, dtype=float)
     dim = y.size
     for it in range(1, max_iter + 1):
         fy = np.atleast_1d(np.asarray(f(t_new, y), dtype=float))
         residual = a_k * y - hb_k * fy - rhs
         if np.linalg.norm(residual) <= tol * (1.0 + np.linalg.norm(y)):
-            return y, it
+            return y, it, True
         jac = np.eye(dim) * a_k - hb_k * _fd_jacobian(f, t_new, y, fy)
         try:
             delta = np.linalg.solve(jac, -residual)
@@ -378,8 +396,8 @@ def _newton_step(f, t_new, guess, rhs, a_k, hb_k, tol, max_iter):
             delta = -np.linalg.lstsq(jac, residual, rcond=None)[0]
         y = y + delta
         if not np.all(np.isfinite(y)):
-            return y, it
-    return y, max_iter
+            return y, it, False
+    return y, max_iter, False
 
 
 def _fd_jacobian(f, t, y, fy):

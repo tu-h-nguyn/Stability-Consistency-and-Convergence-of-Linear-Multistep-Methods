@@ -51,6 +51,8 @@ def main(argv=None) -> int:
             sol = method.solve(problem.f, problem.t_span, args.h, startup=problem.exact)
             err = sol.error_against(problem.exact)
             status = "PHAN KY" if sol.diverged else "ket thuc binh thuong"
+            if sol.newton_failures:
+                status += f", {sol.newton_failures} buoc Newton khong hoi tu"
             print(f"  {problem.name}: h = {args.h}, sai so tai T = {err[-1]:.4e}  ({status})")
         if args.convergence:
             problem = get_problem(args.solve or "logistic")
