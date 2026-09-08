@@ -1,10 +1,21 @@
 name: CI
 
 on:
+  # Only main on push: pull-request branches are already covered by the
+  # pull_request trigger, and listing both ran every commit twice.
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+# A new push supersedes the run still going for the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Nothing here writes to the repository.
+permissions:
+  contents: read
 
 jobs:
   lint:
