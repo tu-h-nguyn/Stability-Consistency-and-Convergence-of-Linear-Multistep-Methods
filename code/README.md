@@ -16,7 +16,7 @@ boundary of the region of absolute stability, and integrates initial value probl
 ```bash
 pip install -e .            # or: pip install -r ../requirements.txt
 python -m lmm --list        # every method in the catalogue
-python -m pytest tests -q   # 68 tests
+python -m pytest tests -q   # 86 tests
 python experiments/run_all.py
 ```
 
@@ -35,5 +35,6 @@ m.is_zero_stable   # False  -> not convergent, however small h is
 | `lmm/catalog.py` | BDF và Adams sinh tự động, các phương pháp kinh điển, phương pháp A/B |
 | `lmm/problems.py` | bài toán mẫu kèm nghiệm chính xác |
 | `lmm/analysis.py` | nghiên cứu hội tụ, bảng tổng hợp |
+| `lmm/latex.py` | sinh bảng LaTeX cho báo cáo và slide |
 | `lmm/plotting.py` | phong cách đồ hoạ dùng chung |
 | `lmm/__main__.py` | giao diện dòng lệnh |
