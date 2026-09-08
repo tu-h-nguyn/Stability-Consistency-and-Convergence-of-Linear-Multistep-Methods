@@ -348,7 +348,7 @@ $k$. Do đó ta sẽ chứng minh phần thứ 2 của định lý.
 \subsection*{Phác thảo chứng minh}
 \noindent\textbf{Biểu diễn tích phân của $p(z)$}
  
-Xuất phát từ định nghĩa \eqref{eq:test}, ta viết mỗi số hạng $z^{j}/j$
+Xuất phát từ định nghĩa \eqref{eq:3.1}, ta viết mỗi số hạng $z^{j}/j$
 dưới dạng tích phân $\int_0^z \zeta^{j-1}\,d\zeta$, cộng dồn theo $j$ rồi
 đổi biến $\zeta = se^{i\theta}$ với $z = re^{i\theta}$ cố định trên tia
 $\arg z=\theta$, ta được
@@ -474,3 +474,55 @@ $k\ge7$ & Không\\
 \end{tabular}
 \end{table}
 
+
+\subsubsection{Kiểm chứng bằng số ranh giới $k \leq 6$}
+
+Kết luận trên có thể được kiểm chứng trực tiếp bằng cách giải số phương trình
+$\rho(z)=0$ cho từng giá trị $k$ và so sánh môđun lớn nhất trong các nghiệm với $1$.
+Bảng~\ref{tab:bdf-stability} được sinh tự động từ mã nguồn đi kèm: với mỗi $k$, hệ số
+của phương pháp BDF được dựng lại từ khai triển sai phân lùi
+$\sum_{j=1}^{k}\frac{1}{j}\nabla^{j}Y_{n+k}=hf_{n+k}$, sau đó nghiệm của đa thức đặc
+trưng thứ nhất được tính bằng phương pháp số.
+
+\input{Sections/generated/bdf_stability}
+
+Có thể thấy với mọi $k\le 6$, môđun lớn nhất đúng bằng $1$ và nghiệm đạt giá trị này
+chính là nghiệm chính $z=1$ (nghiệm đơn), nên điều kiện nghiệm được thỏa mãn. Từ $k=7$,
+môđun lớn nhất vượt ngưỡng ($1.0222$ khi $k=7$ và $1.1839$ khi $k=8$), phá vỡ điều kiện
+nghiệm. Ranh giới $k\le 6$ vì vậy không phải là một quy ước được áp đặt, mà xuất hiện
+như hệ quả trực tiếp từ vị trí nghiệm của đa thức đặc trưng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig06_dahlquist_barrier.png}
+    \caption{Trái: môđun lớn nhất trong các nghiệm của $\rho(z)$ đối với họ BDF, trục
+    tung được phóng to quanh ngưỡng $|z|=1$; các cột đỏ ($k=7,8$) vượt ngưỡng.
+    Phải: bậc chính xác của ba họ phương pháp so với rào cản Dahlquist thứ nhất
+    ($p\le k+2$ khi $k$ chẵn, $p\le k+1$ khi $k$ lẻ). Đường Adams--Bashforth được vẽ
+    dày và mờ vì trùng hoàn toàn với đường BDF: cả hai đều có $p=k$.}
+    \label{fig:dahlquist-barrier}
+\end{figure}
+
+\subsubsection{Miền ổn định tuyệt đối và bài toán cứng}
+
+Tính $0$-ổn định là điều kiện khi $h\to 0$; trong tính toán thực tế, câu hỏi quan trọng
+không kém là với một bước lưới $h$ \emph{cố định}, phương pháp chịu được những giá trị
+$h\lambda$ nào. Miền ổn định tuyệt đối được xác định qua quỹ tích biên: ảnh của đường
+tròn đơn vị dưới ánh xạ $z\mapsto \rho(z)/\sigma(z)$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig05_stability_regions.png}
+    \caption{Biên miền ổn định tuyệt đối. Với họ Adams--Bashforth (trái), miền ổn định
+    nằm \emph{bên trong} đường cong và co lại nhanh khi bậc tăng: khoảng ổn định trên
+    trục thực âm giảm từ $(-2,0)$ với AB1 xuống $(-6/11,0)\approx(-0.546,0)$ với AB3.
+    Với họ BDF (phải), miền ổn định là phần \emph{bên ngoài} đường cong và chứa toàn bộ
+    trục thực âm, nên bước lưới không bị ràng buộc bởi thành phần tắt dần nhanh.}
+    \label{fig:stability-regions}
+\end{figure}
+
+Đây chính là lý do họ BDF được ưa dùng cho các bài toán cứng (stiff). Với bài toán
+$y'=-1000\,(y-\cos t)-\sin t$, $y(0)=1$ và bước lưới $h=0.05$, ta có $h\lambda=-50$ nằm
+ngoài miền ổn định của AB2 nên nghiệm số nổ tung, trong khi BDF2 vẫn cho sai số nhỏ hơn
+$10^{-2}$. Cần nhấn mạnh rằng hai khái niệm là độc lập: AB2 vẫn $0$-ổn định và vẫn hội
+tụ khi $h\to 0$, nhưng ở một bước lưới cụ thể thì hoàn toàn không dùng được.

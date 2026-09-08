@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  # Only main on push: pull-request branches are already covered by the
+  # pull_request trigger, and listing both ran every commit twice.
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A new push supersedes the run still going for the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Nothing here writes to the repository.
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: cd code && ruff check .
+
+  tests:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run the test suite
+        run: cd code && python -m pytest tests -q
+
+  reproduce:
+    name: Reproduce figures and tables
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Regenerate every figure and table
+        run: python code/experiments/run_all.py
+      - name: Fail if the generated LaTeX tables are stale
+        run: |
+          git diff --exit-code -- Sections/generated/ \
+            || { echo "::error::Sections/generated/ is out of date; run 'make figures' and commit."; exit 1; }
+      - name: Report whether the committed figures are stale
+        run: |
+          if git diff --quiet -- figures/; then
+            echo "Committed figures match the code."
+          else
+            echo "::warning::figures/ differs from the committed version; run 'make figures' and commit the result. (PNG rendering also varies between matplotlib versions.)"
+            git diff --stat -- figures/
+          fi
+      - uses: actions/upload-artifact@v6
+        with:
+          name: figures
+          path: figures/
+
+  matlab:
+    name: MATLAB scripts (Octave)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Octave
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq octave
+      - name: Run the MATLAB scripts and check them against the report
+        run: ./matlab/verify.sh
+
+  report:
+    name: Build the LaTeX report
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Trust the workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build the report
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: Build the slides
+        run: cd slides && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - uses: actions/upload-artifact@v6
+        with:
+          name: pdf
+          path: |
+            main.pdf
+            slides/main.pdf

@@ -378,9 +378,80 @@ trong đó các hằng số $C_1,C_2$ phụ thuộc vào điều kiện ban đ�
 \]
 thành phần $C_2\lambda_2^n$ được khuếch đại xấp xỉ $3$ lần sau mỗi bước lặp. Mặc dù sai số ban đầu có thể rất nhỏ, thành phần này vẫn tăng theo cấp số nhân và nhanh chóng lấn át nghiệm thực của bài toán. Chính cơ chế khuếch đại này làm cho nghiệm số phân kỳ mặc dù phương pháp vẫn thỏa điều kiện nhất quán.
 
-\subsubsection*{Tóm tắt}
+\subsection{Ví dụ 3: Kiểm chứng chiều thuận của định lý Dahlquist}
+
+Hai ví dụ trên minh họa chiều \emph{cần} của định lý: thiếu $0$-ổn định thì tính nhất
+quán, dù ở bậc cao, cũng không đủ để hội tụ. Ví dụ này khảo sát chiều còn lại: khi một
+phương pháp vừa nhất quán bậc $p$, vừa $0$-ổn định, sai số toàn cục có thực sự giảm với
+tốc độ $O(h^{p})$ hay không.
+
+\begin{vidu}{Ví dụ 3}
+    Xét bài toán giá trị đầu phi tuyến
+    \begin{equation*}
+        y'(t) = y(t)\bigl(1 - y(t)\bigr), \qquad y(0) = 0.1, \qquad t \in [0, 8],
+    \end{equation*}
+    có nghiệm chính xác $y(t) = \dfrac{1}{1 + 9e^{-t}}$. Giải bài toán bằng năm phương
+    pháp $0$-ổn định: BDF1, BDF2, BDF3, AB2 và AM2.
+\end{vidu}
+
+Bài toán phi tuyến được chọn có chủ đích: với các phương pháp ẩn (BDF và AM), mỗi bước
+đòi hỏi giải thực sự một phương trình phi tuyến theo $Y_{n+k}$, ở đây bằng phương pháp
+Newton với ma trận Jacobi xấp xỉ bằng sai phân hữu hạn. Các giá trị khởi động
+$Y_0,\dots,Y_{k-1}$ được lấy từ nghiệm chính xác nhằm tách riêng sai số của bản thân
+phương pháp khỏi sai số khởi động.
+
+Với mỗi bước lưới $h$, ta ghi nhận sai số toàn cục tại thời điểm cuối
+$E(h) = |Y_N - y(T)|$. Nếu phương pháp hội tụ bậc $p$ thì $E(h) \approx C h^{p}$, do đó
+$\log E(h)$ là hàm bậc nhất theo $\log h$ với hệ số góc $p$. Bậc đo được trong
+Bảng~\ref{tab:convergence} chính là hệ số góc của đường hồi quy này.
+
+\input{Sections/generated/convergence_table}
+
+Kết quả cho thấy bậc đo được khớp với bậc lý thuyết ở cả năm phương pháp, sai lệch lớn
+nhất chỉ khoảng $0.03$. Mỗi lần giảm $h$ đi một nửa, sai số của BDF1 giảm khoảng $2$
+lần, của BDF2 và AB2 giảm khoảng $4$ lần, còn của BDF3 và AM2 giảm khoảng $8$ lần ---
+đúng như các tỉ số $2^{p}$ dự đoán.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig04_convergence.png}
+    \caption{Trái: sai số toàn cục theo bước lưới trên thang log--log; các phương pháp
+    $0$-ổn định cho những đường thẳng có hệ số góc đúng bằng bậc lý thuyết. Phải: so
+    sánh phương pháp A (nhất quán bậc $3$ nhưng không $0$-ổn định) với BDF3 (cùng bậc
+    $3$, có $0$-ổn định) trên bài toán $y'=-y$; giảm $h$ không hề làm giảm sai số của
+    phương pháp A.}
+    \label{fig:convergence}
+\end{figure}
+
+Panel bên phải của Hình~\ref{fig:convergence} đặt cạnh nhau hai phương pháp \emph{cùng
+bậc chính xác $p=3$}: BDF3 và phương pháp A. Chúng chỉ khác nhau ở tính $0$-ổn định, và
+khác biệt đó quyết định toàn bộ: sai số của BDF3 giảm đều theo $h^{3}$, còn sai số của
+phương pháp A giữ nguyên mức $10^{50}$ ở mọi bước lưới. Đây là hình ảnh trực quan nhất
+của định lý tương đương Dahlquist.
+
+\subsection{Bảng tổng hợp}
+
+Bảng~\ref{tab:method-summary} tổng hợp các đại lượng đặc trưng của những phương pháp đã
+xuất hiện trong báo cáo. Toàn bộ các cột đều được suy ra bằng chương trình từ bộ hệ số
+$(\alpha_j,\beta_j)$: bậc $p$ và hằng số sai số $C_{p+1}$ từ toán tử sai phân tuyến
+tính, tính nhất quán từ hai điều kiện $\rho(1)=0$ và $\rho'(1)=\sigma(1)$, tính
+$0$-ổn định từ nghiệm của $\rho$, và cột cuối cùng là kết luận của định lý Dahlquist.
+
+\input{Sections/generated/method_summary}
+
+Đáng chú ý là công thức Simpson đạt bậc $p=4$ với chỉ $k=2$ bước, tức chạm đúng chặn
+trên $p \le k+2$ của rào cản Dahlquist thứ nhất. Ở chiều ngược lại, phương pháp A có bậc
+$p=3$ --- cao hơn cả BDF2 và AB2 trong cùng bảng --- nhưng vẫn nằm ở nhóm không hội tụ.
+
+\subsection*{Tóm tắt}
 Hai ví dụ thực nghiệm trong chương này đã minh họa trực quan các kết quả của định lý Dashquist. Ví dụ 1 khảo sát một phương pháp đa bước tuyến tính hiện, trong khi Ví dụ 2 khảo sát một phương pháp đa bước tuyến tính ẩn. Mặc dù cả hai phương pháp đều thỏa điều kiện nhất quán, chúng đều vi phạm điều kiện nghiệm. Kết quả là sai số không bị triệt tiêu mà ngược lại còn được khuếch đại sau mỗi bước lặp, khiến nghiệm số nhanh chóng phân kỳ khỏi nghiệm chính xác.
 
 Các bảng số liệu và đồ thị MATLAB đều cho thấy sai số tăng rất nhanh theo thời gian, hoàn toàn phù hợp với phân tích lý thuyết dựa trên điều kiện 0-ổn định. Điều này xác nhận rằng tính nhất quán chỉ là điều kiện cần, còn tính 0-ổn định mới là điều kiện quyết định để đảm bảo hội tụ của phương pháp đa bước tuyến tính.
 
 Qua các ví dụ trên có thể rút ra rằng việc lựa chọn một phương pháp số không chỉ dựa trên bậc chính xác hay việc phương pháp là hiện hoặc ẩn, mà quan trọng hơn là phải kiểm tra điều kiện nghiệm của đa thức đặc trưng. Đây cũng chính là nội dung cốt lõi của Định lý hội tụ Dahlquist và cũng là cơ sở lý thuyết cho việc xây dựng các phương pháp ổn định trong thực tế.
+
+Ví dụ 3 bổ sung chiều còn lại của định lý: năm phương pháp vừa nhất quán vừa $0$-ổn định
+đều cho bậc hội tụ đo được trùng với bậc lý thuyết. Đặt cạnh phương pháp A cùng bậc $3$
+nhưng không $0$-ổn định, có thể thấy rõ rằng bậc chính xác quyết định \emph{tốc độ} hội
+tụ, còn tính $0$-ổn định quyết định \emph{có hội tụ hay không}. Hai tính chất này không
+thay thế được cho nhau.
