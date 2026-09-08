@@ -48,7 +48,8 @@ def figure(studies, diverging, reference):
 
     for i, cs in enumerate(studies):
         ax1.loglog(cs.steps, cs.errors, "o-", color=PALETTE[i % len(PALETTE)], ms=4,
-                   label=f"{cs.method.name} · $p={cs.method.order}$, đo được ${cs.estimated_order:.2f}$")
+                   label=f"{cs.method.name} · $p={cs.method.order}$, "
+                         f"đo được ${cs.estimated_order:.2f}$")
     ax1.set_xlabel("bước lưới $h$")
     ax1.set_ylabel("sai số toàn cục tại $T$")
     ax1.set_title("Phương pháp 0-ổn định: sai số giảm đúng bậc")

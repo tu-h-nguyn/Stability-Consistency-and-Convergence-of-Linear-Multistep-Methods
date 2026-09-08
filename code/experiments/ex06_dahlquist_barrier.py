@@ -53,7 +53,7 @@ def figure(radii, orders):
     ax1.set_xlabel("số bước $k$ của BDF")
     ax1.set_ylabel(r"$\max |z_i|$ trong nghiệm của $\rho$")
     ax1.set_title("BDF chỉ 0-ổn định khi $k \\leq 6$")
-    for k, r in zip(ks[6:], radii[6:]):
+    for k, r in zip(ks[6:], radii[6:], strict=True):
         ax1.annotate(f"{r:.3f}", (k, r), ha="center", va="bottom",
                      color=PALETTE[1], fontsize=9)
     ax1.text(0.02, 0.93, "trục tung được phóng to quanh $|z| = 1$",

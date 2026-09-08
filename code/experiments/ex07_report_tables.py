@@ -10,12 +10,12 @@ import _bootstrap  # noqa: F401
 
 from lmm.analysis import convergence_study
 from lmm.catalog import (
+    EULER_EXPLICIT,
     METHOD_A,
     METHOD_B,
     MIDPOINT,
     SIMPSON,
     TRAPEZOID,
-    EULER_EXPLICIT,
     adams_bashforth,
     adams_moulton,
     bdf,
@@ -37,7 +37,8 @@ SUMMARY = [
 def run():
     studies = [convergence_study(m, LOGISTIC, STEPS) for m in CONVERGENT]
     for cs in studies:
-        print(f"  {cs.method.name:5s} p = {cs.method.order}, bậc đo được = {cs.estimated_order:.3f}")
+        print(f"  {cs.method.name:5s} p = {cs.method.order}, "
+              f"bậc đo được = {cs.estimated_order:.3f}")
 
     write("convergence_table.tex", convergence_table(
         studies,

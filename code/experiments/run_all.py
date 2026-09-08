@@ -13,7 +13,6 @@ import io
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import ex01_method_a
 import ex02_method_b
 import ex03_root_condition
@@ -21,6 +20,7 @@ import ex04_convergence
 import ex05_stability_regions
 import ex06_dahlquist_barrier
 import ex07_report_tables
+
 from lmm import __version__
 from lmm.analysis import method_table
 from lmm.catalog import CLASSIC_METHODS
@@ -65,7 +65,8 @@ def main() -> None:
 
     out = FIGURE_DIR / "RESULTS.md"
     out.write_text("\n".join(parts), encoding="utf-8")
-    print(f"\nviet ket qua vao {out.relative_to(Path.cwd()) if out.is_relative_to(Path.cwd()) else out}")
+    shown = out.relative_to(Path.cwd()) if out.is_relative_to(Path.cwd()) else out
+    print(f"\nviet ket qua vao {shown}")
 
 
 def _as_tuple(result):

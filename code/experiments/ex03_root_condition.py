@@ -36,7 +36,7 @@ def figure(methods):
     fig, axes = plt.subplots(rows, cols, figsize=(3.5 * cols, 3.6 * rows))
     theta = np.linspace(0, 2 * np.pi, 400)
 
-    for ax, m in zip(np.ravel(axes), methods):
+    for ax, m in zip(np.ravel(axes), methods, strict=False):  # axes may outnumber methods
         rc = m.root_condition()
         stable = rc.satisfied
         accent = PALETTE[2] if stable else PALETTE[1]

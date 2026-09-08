@@ -30,7 +30,7 @@ def sci(x: float, digits: int = 3) -> str:
     """Format a float as ``a.bcd \\times 10^{e}`` for maths mode."""
     if x == 0 or not math.isfinite(x):
         return "0" if x == 0 else r"\infty"
-    exponent = int(math.floor(math.log10(abs(x))))
+    exponent = math.floor(math.log10(abs(x)))
     mantissa = x / 10.0**exponent
     if exponent == 0:
         return f"{mantissa:.{digits}f}"

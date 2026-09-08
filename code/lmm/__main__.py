@@ -21,12 +21,20 @@ from .problems import get as get_problem
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m lmm",
-        description="Kiem tra tinh nhat quan, 0-on dinh va hoi tu cua phuong phap da buoc tuyen tinh.",
+        description=(
+            "Kiem tra tinh nhat quan, 0-on dinh va hoi tu "
+            "cua phuong phap da buoc tuyen tinh."
+        ),
     )
-    p.add_argument("methods", nargs="*", help=f"khoa trong danh muc: {', '.join(sorted(CLASSIC_METHODS))}")
+    p.add_argument(
+        "methods", nargs="*",
+        help=f"khoa trong danh muc: {', '.join(sorted(CLASSIC_METHODS))}",
+    )
     p.add_argument("--list", action="store_true", help="in bang tong hop toan bo danh muc")
-    p.add_argument("--solve", metavar="PROBLEM", choices=sorted(PROBLEMS),
-                   help=f"giai mot bai toan mau: {', '.join(sorted(PROBLEMS))}")
+    p.add_argument(
+        "--solve", metavar="PROBLEM", choices=sorted(PROBLEMS),
+        help=f"giai mot bai toan mau: {', '.join(sorted(PROBLEMS))}",
+    )
     p.add_argument("--h", type=float, default=0.1, help="buoc luoi (mac dinh 0.1)")
     p.add_argument("--convergence", action="store_true", help="do bac hoi tu thuc nghiem")
     p.add_argument("--version", action="version", version=f"lmm {__version__}")

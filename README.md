@@ -1,7 +1,8 @@
 # Ổn định, nhất quán và hội tụ của phương pháp đa bước tuyến tính
 
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
+[![Ruff](https://img.shields.io/badge/lint-ruff-261230.svg)](https://docs.astral.sh/ruff/)
 [![Tests](https://img.shields.io/badge/tests-86%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
@@ -132,8 +133,12 @@ Hoặc dùng `make` từ thư mục gốc:
 make figures   # sinh lại toàn bộ hình vẽ, bảng LaTeX và figures/RESULTS.md
 make test      # chạy 86 test Python
 make matlab    # chạy mã MATLAB bằng Octave và đối chiếu với báo cáo
+make lint      # ruff
 make report    # biên dịch main.pdf (cần LaTeX)
 ```
+
+Bộ test chạy sạch trên **Python 3.10, 3.11, 3.12 và 3.13**; `ruff check` không còn cảnh
+báo nào.
 
 ---
 
@@ -280,9 +285,14 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 └── .github/workflows/ci.yml  # test Python, kiểm mã MATLAB, build PDF
 ```
 
-CI chạy toàn bộ test, sinh lại hình vẽ và bảng LaTeX, báo lỗi nếu `Sections/generated/`
-không còn khớp với code, rồi biên dịch cả `main.pdf` lẫn `slides/main.pdf` trong
-container TeX Live.
+CI gồm 5 job: **lint** (ruff), **tests** (ma trận Python 3.10–3.13), **reproduce**
+(sinh lại hình và bảng, báo lỗi nếu `Sections/generated/` lỗi thời), **matlab** (chạy
+`matlab/verify.sh` bằng Octave) và **report** (biên dịch cả hai PDF trong container
+TeX Live).
+
+Vì sao bảng LaTeX bị kiểm nghiêm còn hình vẽ chỉ cảnh báo: các tệp `.tex` sinh ra
+**giống hệt nhau từng byte** trên cả bốn phiên bản Python, còn PNG thì đổi theo phiên
+bản matplotlib. Điều này đã được kiểm chứng thực tế chứ không phải phỏng đoán.
 
 ---
 

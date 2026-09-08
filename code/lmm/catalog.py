@@ -79,7 +79,7 @@ def adams_bashforth(k: int) -> LinearMultistepMethod:
     alpha = [0.0] * (k + 1)
     alpha[k], alpha[k - 1] = 1.0, -1.0
     nodes = [float(j - (k - 1)) for j in range(k)]  # s-coordinates of t_{n+j}
-    beta = _lagrange_weights(nodes) + [0.0]
+    beta = [*_lagrange_weights(nodes), 0.0]
     return LinearMultistepMethod(
         tuple(alpha), tuple(beta), name=f"AB{k}",
         description=f"{k}-step Adams-Bashforth method (explicit, order {k})",

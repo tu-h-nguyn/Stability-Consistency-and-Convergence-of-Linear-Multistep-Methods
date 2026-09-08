@@ -5,6 +5,7 @@
 #   make figures    regenerate every figure from the Python code
 #   make test       run the test suite
 #   make matlab     run the MATLAB scripts through Octave and check them
+#   make lint       run ruff over the Python sources
 #   make all        everything above
 
 PYTHON  ?= python3
@@ -30,7 +31,7 @@ matlab:
 	./matlab/verify.sh
 
 lint:
-	$(PYTHON) -m compileall -q code
+	cd code && $(PYTHON) -m ruff check .
 
 clean:
 	latexmk -C main.tex || true

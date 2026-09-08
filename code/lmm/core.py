@@ -22,8 +22,8 @@ numerics can never drift apart.
 from __future__ import annotations
 
 import math
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
-from typing import Callable, Sequence
 
 import numpy as np
 
@@ -60,7 +60,7 @@ class Solution:
 
     t: np.ndarray
     y: np.ndarray
-    method: "LinearMultistepMethod"
+    method: LinearMultistepMethod
     h: float
     newton_iterations: int = 0
     newton_failures: int = 0
@@ -138,7 +138,7 @@ class LinearMultistepMethod:
     def rho_prime_at(self, z: complex) -> complex:
         return np.polyval(np.polyder(self.rho), z)
 
-    def normalised(self) -> "LinearMultistepMethod":
+    def normalised(self) -> LinearMultistepMethod:
         """Return the same method scaled so that ``alpha_k = 1``."""
         s = self.alpha[-1]
         return LinearMultistepMethod(
@@ -287,7 +287,7 @@ class LinearMultistepMethod:
             behaviour.
         """
         t0, T = t_span
-        n_steps = int(round((T - t0) / h))
+        n_steps = round((T - t0) / h)
         if n_steps < self.k:
             raise ValueError("step size too large: fewer grid points than steps of the method")
         t = t0 + h * np.arange(n_steps + 1)

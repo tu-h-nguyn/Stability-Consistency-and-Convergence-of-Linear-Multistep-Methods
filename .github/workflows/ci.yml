@@ -7,8 +7,36 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: cd code && ruff check .
+
   tests:
-    name: Python tests
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run the test suite
+        run: cd code && python -m pytest tests -q
+
+  reproduce:
+    name: Reproduce figures and tables
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,8 +45,6 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Run the test suite
-        run: cd code && python -m pytest tests -q
       - name: Regenerate every figure and table
         run: python code/experiments/run_all.py
       - name: Fail if the generated LaTeX tables are stale
@@ -30,7 +56,7 @@ jobs:
           if git diff --quiet -- figures/; then
             echo "Committed figures match the code."
           else
-            echo "::warning::figures/ differs from the committed version; run 'make figures' and commit the result. (Rendering can also vary slightly between matplotlib versions.)"
+            echo "::warning::figures/ differs from the committed version; run 'make figures' and commit the result. (PNG rendering also varies between matplotlib versions.)"
             git diff --stat -- figures/
           fi
       - uses: actions/upload-artifact@v4

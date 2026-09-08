@@ -41,7 +41,9 @@ class ConvergenceStudy:
 
     def as_rows(self) -> list[tuple[float, float, float]]:
         orders = np.concatenate([[np.nan], self.observed_orders])
-        return list(zip(self.steps.tolist(), self.errors.tolist(), orders.tolist()))
+        return list(
+            zip(self.steps.tolist(), self.errors.tolist(), orders.tolist(), strict=True)
+        )
 
     def to_markdown(self) -> str:
         head = "| h | sai số tại T | bậc quan sát |\n|---:|---:|---:|"
