@@ -1,0 +1,6 @@
+# Runtime dependencies of the `lmm` package and its experiments.
+numpy>=1.24
+matplotlib>=3.7
+
+# Development / test
+pytest>=7.4

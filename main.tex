@@ -104,9 +104,12 @@
 	boxed title style={arc=3mm,, size=small}
 }
 
-\title{\color{titleblue}\textbf{DÀN BÀI CHI TIẾT BÁO CÁO (BẢN CHUẨN HÓA)}\\[0.5em]
-\Large \textbf{PHƯƠNG PHÁP ĐA BƯỚC TUYẾN TÍNH}\\[0.3em]
-\large \textit{\color{black}Phân tích hệ thống Sai số, tính nhất quán, ổn định và sự hội tụ}}
+\title{\color{titleblue}\textbf{PHƯƠNG PHÁP ĐA BƯỚC TUYẾN TÍNH}\\[0.4em]
+\large \textit{\color{black}Sai số, tính nhất quán, tính 0-ổn định và sự hội tụ}\\[0.2em]
+\large \textit{\color{black}cùng định lý tương đương Dahlquist}\\[0.8em]
+\normalsize \color{black}Báo cáo môn Giải tích số cho Phương trình vi phân\\[0.2em]
+\normalsize \color{black}Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM}
+% Điền tên nhóm thực hiện vào đây trước khi nộp / công bố.
 \author{}
 \date{\today}
 
@@ -151,6 +154,20 @@ Năm 1956, Germund Dahlquist đã thiết lập một kết quả cơ bản tron
 Báo cáo này trình bày một cách hệ thống các khái niệm về tính nhất quán, $0$-ổn định và tính hội tụ của phương pháp đa bước tuyến tính, đồng thời giới thiệu nội dung và ý nghĩa của định lý tương đương Dahlquist. Bên cạnh phần lý thuyết, báo cáo cũng trình bày các ví dụ minh họa cho họ phương pháp đa bước tuyến tính phổ biến Backward Differentiation Formulas (BDF).
 
 Nhóm chúng em xin chân thành cảm ơn thầy TS.Nguyễn Đăng Khoa đã hướng dẫn và góp ý trong suốt quá trình thực hiện báo cáo này.
+
+\newpage
+\section*{Mã nguồn đi kèm}
+Toàn bộ kết quả số trong báo cáo này được sinh lại bằng mã nguồn công khai đi kèm.
+Thư viện Python \texttt{lmm} suy ra trực tiếp từ bộ hệ số $(\alpha_j,\beta_j)$ của một
+phương pháp: bậc chính xác, hằng số sai số, điều kiện nghiệm, tính 0-ổn định và miền
+ổn định tuyệt đối; các script trong \texttt{code/experiments/} tái tạo mọi bảng số và
+hình vẽ, còn bộ kiểm thử trong \texttt{code/tests/} kiểm chứng bằng số các phát biểu
+lý thuyết được chứng minh ở các chương sau (kể cả rào cản Dahlquist và giới hạn
+$k \leq 6$ của họ BDF).
+
+\begin{center}
+\url{https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods}
+\end{center}
 
 \newpage
 \input{Sections/section_1}
