@@ -373,3 +373,19 @@ the printed PDF agree to six significant digits.
 pip install -r requirements.txt
 cd code && python -m lmm --list && python -m pytest tests -q
 ```
+
+---
+
+## Minh bạch về AI
+
+Repo này được xây dựng với Claude (Anthropic) trong vai trò trợ lý lập trình: 10 trong
+15 commit mang dòng đồng tác giả Claude. Phạm vi cụ thể:
+
+- **Phần toán học và báo cáo là bài tập nhóm.** Lý thuyết, các chứng minh, 63 trang báo
+  cáo và 50 trang slide là công của ba thành viên.
+- **Các commit có AI hỗ trợ là phần kỹ thuật.** Đưa mã nguồn vào báo cáo, kiểm chứng chéo
+  MATLAB với Python, báo cáo bước Newton không hội tụ, linting, CI, và dọn cảnh báo dựng.
+- **Không có kết luận nào được tin suông.** Thư viện không hard-code bất kỳ kết luận nào:
+  đưa vào bộ hệ số, nó tự suy ra bậc, hằng số sai số, nghiệm đa thức đặc trưng và tính
+  0-ổn định. Nhờ vậy mỗi khẳng định trong sách trở thành một assertion mà bộ 86 test phải
+  thỏa mãn — sai là hỏng build, bất kể ai viết dòng đó.
