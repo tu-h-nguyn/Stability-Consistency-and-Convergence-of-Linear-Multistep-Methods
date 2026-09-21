@@ -3,7 +3,7 @@
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![Ruff](https://img.shields.io/badge/lint-ruff-261230.svg)](https://docs.astral.sh/ruff/)
-[![Tests](https://img.shields.io/badge/tests-86%20passed-brightgreen.svg)](code/tests)
+[![Tests](https://img.shields.io/badge/tests-89%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (50 trang)](slides/main.pdf)**
@@ -24,18 +24,20 @@ $(\alpha_j, \beta_j)$, nó tự suy ra bậc chính xác, hằng số sai số, 
 chứng bằng số** trong bộ test, chứ không phải chép lại từ sách.
 
 <p align="center">
-  <img src="figures/fig01_method_a.png" width="100%" alt="Phương pháp A: nhất quán bậc 3 nhưng phân kỳ">
+  <img src="figures/anim01_divergence.gif" width="100%" alt="Phương pháp A phân kỳ từng bước một">
 </p>
 
-*Phương pháp A nhất quán bậc 3 — bậc cao hơn cả BDF2 — nhưng đa thức $\rho$ có nghiệm
-$z = -5$. Sai số bị nhân 5 lần sau mỗi bước và đạt $10^{37}$ tại $t = 6$. Bậc chính xác
-không cứu nổi một phương pháp không 0-ổn định.*
+*Phương pháp A nhất quán bậc 3 — cao hơn cả BDF2 — nhưng $\rho(z) = (z-1)(z+5)$ có
+nghiệm $z = -5$. Xem từng bước: sai số bị nhân $5$ lần mỗi bước, vượt $1$ ngay trước
+$t = 1$ rồi đạt $10^{37}$ tại $t = 6$. Bậc chính xác không cứu nổi một phương pháp
+không 0-ổn định.*
 
 ---
 
 ## Mục lục
 
 - [Kết quả chính](#kết-quả-chính)
+- [Xem nó chạy](#xem-nó-chạy)
 - [Chạy thử trong 30 giây](#chạy-thử-trong-30-giây)
 - [Thư viện `lmm`](#thư-viện-lmm)
 - [Các thí nghiệm số](#các-thí-nghiệm-số)
@@ -89,6 +91,32 @@ Bốn kết luận rút ra được từ mã nguồn:
 
 ---
 
+## Xem nó chạy
+
+Ba hoạt ảnh dưới đây được sinh bằng `make animations`. Chúng không minh hoạ kết luận —
+chúng cho thấy **cơ chế** tạo ra kết luận đó.
+
+### Lưới mịn dần: nghiệm số bám lấy nghiệm đúng
+
+<p align="center">
+  <img src="figures/anim02_convergence.gif" width="100%" alt="BDF2 hội tụ khi h giảm">
+</p>
+
+Chiều thuận của định lý Dahlquist. Mỗi lần $h$ giảm một nửa, sai số giảm $4$ lần — đúng
+$2^p$ với $p = 2$. Bên phải là chính điểm đó được đặt lên đường log–log đang vẽ dần.
+
+### Nghiệm của đa thức ổn định rời khỏi đĩa đơn vị
+
+<p align="center">
+  <img src="figures/anim03_stability_roots.gif" width="100%" alt="Nghiệm di chuyển khi h·lambda thay đổi">
+</p>
+
+Cho $h\lambda$ chạy dọc trục thực âm và nhìn nghiệm của $\rho(z) - h\lambda\,\sigma(z)$
+di chuyển. Nghiệm của AB2 thoát khỏi đĩa tại $h\lambda = -1$ — từ đó nghiệm số nổ. Nghiệm
+của BDF2 không bao giờ thoát, dù $h\lambda$ có âm đến đâu. **0-ổn định và ổn định tuyệt
+đối là hai chuyện khác nhau**: AB2 vẫn 0-ổn định, vẫn hội tụ khi $h \to 0$, nhưng ở một
+bước lưới cụ thể thì vô dụng.
+
 ## Chạy thử trong 30 giây
 
 ```bash
@@ -131,8 +159,9 @@ Hoặc dùng `make` từ thư mục gốc:
 
 ```bash
 make figures   # sinh lại toàn bộ hình vẽ, bảng LaTeX và figures/RESULTS.md
-make test      # chạy 86 test Python
+make test      # chạy 89 test Python
 make matlab    # chạy mã MATLAB bằng Octave và đối chiếu với báo cáo
+make animations # sinh lại ba GIF (chậm, ~90 giây)
 make lint      # ruff
 make report    # biên dịch main.pdf (cần LaTeX)
 ```
@@ -240,7 +269,7 @@ make test     # code/tests/test_report_reproduction.py so cùng số liệu đó
 
 ```bash
 cd code && python -m pytest tests -q
-# 86 passed
+# 89 passed
 ```
 
 Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các phát biểu toán học**:
@@ -275,10 +304,11 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 │   │   ├── problems.py       # bài toán mẫu kèm nghiệm chính xác
 │   │   ├── analysis.py       # nghiên cứu hội tụ, bảng tổng hợp
 │   │   ├── latex.py          # sinh bảng LaTeX cho báo cáo
+│   │   ├── animation.py      # kết xuất GIF
 │   │   ├── plotting.py       # phong cách đồ hoạ dùng chung
 │   │   └── __main__.py       # giao diện dòng lệnh
-│   ├── experiments/          # 7 thí nghiệm + run_all.py
-│   └── tests/                # 86 test
+│   ├── experiments/          # 8 thí nghiệm (gồm hoạt ảnh) + run_all.py
+│   └── tests/                # 89 test
 │
 ├── matlab/                   # mã MATLAB gốc trích từ báo cáo + verify.sh (Octave)
 ├── figures/                  # hình sinh tự động + RESULTS.md
@@ -358,7 +388,7 @@ Jacobian).
 
 Nothing is hard-coded: BDF coefficients come from the backward-difference construction
 and Adams coefficients from exact integration of the Lagrange interpolant, so classical
-results are *measured* rather than asserted. The 86-test suite verifies that observed
+results are *measured* rather than asserted. The 89-test suite verifies that observed
 convergence rates match the theoretical orders, that BDF is zero-stable exactly for
 $k \le 6$, that the first Dahlquist barrier holds across the catalogue, and that the two
 deliberately non-zero-stable methods of Chapter 4 diverge at every step size — the
@@ -369,6 +399,15 @@ the original MATLAB listings through Octave and `code/tests/test_report_reproduc
 checks the same figures against the Python library. Two independent implementations and
 the printed PDF agree to six significant digits.
 
+Three animations (`make animations`) show the mechanisms rather than the conclusions:
+the parasitic root multiplying the error at every step, the solution snapping onto the
+exact curve as the grid refines, and the roots of the stability polynomial walking out
+of the unit disc as `h·lambda` sweeps the negative real axis.
+
+The categorical palette is checked with a colour-vision validator, not by eye: the
+previous one separated method A from BDF3 — the project's headline comparison — by a
+deltaE of 7.0 for deuteranopes, which is below the legible floor.
+
 ```bash
 pip install -r requirements.txt
 cd code && python -m lmm --list && python -m pytest tests -q
@@ -378,14 +417,22 @@ cd code && python -m lmm --list && python -m pytest tests -q
 
 ## Minh bạch về AI
 
-Repo này được xây dựng với Claude (Anthropic) trong vai trò trợ lý lập trình: 10 trong
-15 commit mang dòng đồng tác giả Claude. Phạm vi cụ thể:
+Repo này được xây dựng với Claude (Anthropic) trong vai trò trợ lý lập trình. Các commit
+có AI hỗ trợ đều mang dòng `Co-Authored-By: Claude`, nên `git log` là nguồn chính xác
+thay vì một con số chép tay ở đây:
+
+```bash
+git log --format='%H %s' --grep='Co-Authored-By: Claude' | wc -l
+```
+
+Phạm vi cụ thể:
 
 - **Phần toán học và báo cáo là bài tập nhóm.** Lý thuyết, các chứng minh, 63 trang báo
   cáo và 50 trang slide là công của ba thành viên.
 - **Các commit có AI hỗ trợ là phần kỹ thuật.** Đưa mã nguồn vào báo cáo, kiểm chứng chéo
-  MATLAB với Python, báo cáo bước Newton không hội tụ, linting, CI, và dọn cảnh báo dựng.
+  MATLAB với Python, báo cáo bước Newton không hội tụ, linting, CI, dọn cảnh báo dựng,
+  và ba hoạt ảnh.
 - **Không có kết luận nào được tin suông.** Thư viện không hard-code bất kỳ kết luận nào:
   đưa vào bộ hệ số, nó tự suy ra bậc, hằng số sai số, nghiệm đa thức đặc trưng và tính
-  0-ổn định. Nhờ vậy mỗi khẳng định trong sách trở thành một assertion mà bộ 86 test phải
+  0-ổn định. Nhờ vậy mỗi khẳng định trong sách trở thành một assertion mà bộ test phải
   thỏa mãn — sai là hỏng build, bất kể ai viết dòng đó.

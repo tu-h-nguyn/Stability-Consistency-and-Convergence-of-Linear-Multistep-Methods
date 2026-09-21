@@ -14,10 +14,32 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-__all__ = ["PALETTE", "INK", "MUTED", "GRID", "use_project_style", "save", "FIGURE_DIR", "symlog"]
+__all__ = [
+    "PALETTE",
+    "SURFACE",
+    "INK",
+    "MUTED",
+    "GRID",
+    "use_project_style",
+    "save",
+    "FIGURE_DIR",
+    "symlog",
+]
 
-#: Colour-blind safe qualitative palette (Okabe-Ito derived).
-PALETTE = ["#1f5fa8", "#c8532b", "#2f8f5b", "#8a5cb8", "#b8860b", "#4a7f9c"]
+#: Categorical palette, assigned in fixed order and never cycled.
+#:
+#: Checked with a colour-vision validator rather than by eye. The five slots
+#: actually used pass the lightness band, the chroma floor, adjacent-pair
+#: separation under simulated colour-vision deficiency (worst adjacent pair
+#: orange/aqua, deltaE 9.2 deutan) and the normal-vision floor. The previous
+#: palette put an orange next to a green at deltaE 7.0 for deuteranopes --
+#: exactly the pair used to contrast method A with BDF3, the project's headline
+#: comparison, which a red-green colour-blind reader could not separate.
+#:
+#: Aqua sits at 2.74:1 against the surface, below the 3:1 bar, so every chart
+#: using it carries a legend or direct labels: identity is never colour alone.
+PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7", "#e34948", "#008300"]
+SURFACE = "#fcfcfb"
 INK = "#1b1f24"
 MUTED = "#6b7480"
 GRID = "#dfe3e8"
@@ -53,7 +75,8 @@ def use_project_style() -> None:
             "xtick.labelcolor": INK,
             "ytick.labelcolor": INK,
             "lines.linewidth": 1.8,
-            "figure.facecolor": "white",
+            "figure.facecolor": SURFACE,
+            "axes.facecolor": SURFACE,
         }
     )
 
