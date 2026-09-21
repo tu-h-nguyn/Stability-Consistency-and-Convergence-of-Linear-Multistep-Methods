@@ -3,7 +3,7 @@
 [![CI](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-h-nguyn/Stability-Consistency-and-Convergence-of-Linear-Multistep-Methods/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![Ruff](https://img.shields.io/badge/lint-ruff-261230.svg)](https://docs.astral.sh/ruff/)
-[![Tests](https://img.shields.io/badge/tests-89%20passed-brightgreen.svg)](code/tests)
+[![Tests](https://img.shields.io/badge/tests-93%20passed-brightgreen.svg)](code/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 📄 **[Báo cáo đầy đủ (63 trang, PDF)](main.pdf)** · 🖥️ **[Slide trình bày (50 trang)](slides/main.pdf)**
@@ -28,9 +28,9 @@ chứng bằng số** trong bộ test, chứ không phải chép lại từ sác
 </p>
 
 *Phương pháp A nhất quán bậc 3 — cao hơn cả BDF2 — nhưng $\rho(z) = (z-1)(z+5)$ có
-nghiệm $z = -5$. Xem từng bước: sai số bị nhân $5$ lần mỗi bước, vượt $1$ ngay trước
-$t = 1$ rồi đạt $10^{37}$ tại $t = 6$. Bậc chính xác không cứu nổi một phương pháp
-không 0-ổn định.*
+nghiệm $z = -5$. Xem từng bước: ở $h = 0.1$ sai số bị nhân đúng $5.3048$ lần mỗi bước —
+chính là $|\lambda_2|$ của phương trình sai phân — vượt $1$ ngay trước $t = 1$ rồi đạt
+$10^{37}$ tại $t = 6$. Bậc chính xác không cứu nổi một phương pháp không 0-ổn định.*
 
 ---
 
@@ -159,7 +159,7 @@ Hoặc dùng `make` từ thư mục gốc:
 
 ```bash
 make figures   # sinh lại toàn bộ hình vẽ, bảng LaTeX và figures/RESULTS.md
-make test      # chạy 89 test Python
+make test      # chạy 93 test Python
 make matlab    # chạy mã MATLAB bằng Octave và đối chiếu với báo cáo
 make animations # sinh lại ba GIF (chậm, ~90 giây)
 make lint      # ruff
@@ -269,7 +269,7 @@ make test     # code/tests/test_report_reproduction.py so cùng số liệu đó
 
 ```bash
 cd code && python -m pytest tests -q
-# 89 passed
+# 93 passed
 ```
 
 Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các phát biểu toán học**:
@@ -308,7 +308,7 @@ Test không chỉ kiểm tra code chạy được, mà kiểm chứng **các ph�
 │   │   ├── plotting.py       # phong cách đồ hoạ dùng chung
 │   │   └── __main__.py       # giao diện dòng lệnh
 │   ├── experiments/          # 8 thí nghiệm (gồm hoạt ảnh) + run_all.py
-│   └── tests/                # 89 test
+│   └── tests/                # 93 test
 │
 ├── matlab/                   # mã MATLAB gốc trích từ báo cáo + verify.sh (Octave)
 ├── figures/                  # hình sinh tự động + RESULTS.md
@@ -388,7 +388,7 @@ Jacobian).
 
 Nothing is hard-coded: BDF coefficients come from the backward-difference construction
 and Adams coefficients from exact integration of the Lagrange interpolant, so classical
-results are *measured* rather than asserted. The 89-test suite verifies that observed
+results are *measured* rather than asserted. The 93-test suite verifies that observed
 convergence rates match the theoretical orders, that BDF is zero-stable exactly for
 $k \le 6$, that the first Dahlquist barrier holds across the catalogue, and that the two
 deliberately non-zero-stable methods of Chapter 4 diverge at every step size — the

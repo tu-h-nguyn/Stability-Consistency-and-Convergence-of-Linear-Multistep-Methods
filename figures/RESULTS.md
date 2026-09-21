@@ -45,8 +45,8 @@ Phương pháp A  (explicit, k = 2)
    4.0         1.831564e-02        -3.872979e+22      3.873e+22
    6.0         2.478752e-03        -1.206376e+37      1.206e+37
 
-nghiem cua phuong trinh sai phan: lambda = [-4.705168  1.105168]
-can phan ky |lambda_2| = 4.7052 > 1  ->  khuech dai moi buoc
+nghiem cua phuong trinh sai phan: lambda = [-5.304835  0.904835]
+can phan ky |lambda_2| = 5.3048 > 1  ->  khuech dai moi buoc
   saved  figures/fig01_method_a.png
 ```
 

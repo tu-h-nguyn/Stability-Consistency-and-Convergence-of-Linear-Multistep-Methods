@@ -19,6 +19,9 @@ from lmm.problems import DECAY, LOGISTIC
 
 H = 0.1
 
+#: A root within this of modulus one counts as lying on the circle.
+TOL = 1e-9
+
 
 # ----------------------------------------------------------------------
 # 1. A consistent method destroyed by one parasitic root
@@ -57,7 +60,11 @@ def divergence():
     ax2.axhline(1.0, color=MUTED, lw=1.0, ls=":")
     ax2.set_xlabel("$t$")
     ax2.set_ylabel(r"$|Y_n - y(t_n)|$")
-    ax2.set_title(r"Sai số $\times\,5$ mỗi bước  ($|z_2| = 5$)")
+    # |z_2| = 5 is the root of rho, i.e. the h -> 0 limit. At h = 0.1 the
+    # difference equation's parasitic root is -5.3048, and that is the factor
+    # the error actually grows by, so quote the measured one.
+    growth = float(np.mean(err[25:50] / err[24:49]))
+    ax2.set_title(rf"Sai số $\times\,{growth:.2f}$ mỗi bước  ($|z_2| = 5$ khi $h \to 0$)")
 
     readout = fig.text(0.5, 0.015, "", ha="center", color=MUTED, fontsize=10)
     fig.suptitle("Ví dụ 1 — phương pháp A: $\\rho(z) = (z-1)(z+5)$",
@@ -184,11 +191,20 @@ def stability_roots(frames: int = 70):
         for method, dots, verdict in artists:
             poly = np.trim_zeros(method.rho - hlam * method.sigma, "f")
             roots = np.roots(poly) if poly.size > 1 else np.array([])
-            stable = roots.size > 0 and np.all(np.abs(roots) < 1.0)
+            radii = np.abs(roots) if roots.size else np.array([np.inf])
+            # Three states, not two. At h*lambda = 0 the consistency root sits
+            # exactly ON the circle for every consistent method: it has not
+            # escaped, and calling that "escaped" would be false on frame one.
+            if radii.max() > 1.0 + TOL:
+                colour, text = PALETTE[1], "nghiệm thoát khỏi đĩa đơn vị"
+            elif radii.max() > 1.0 - TOL:
+                colour, text = MUTED, "nghiệm nằm trên đường tròn đơn vị"
+            else:
+                colour, text = PALETTE[2], "ổn định tuyệt đối"
             dots.set_data(roots.real, roots.imag)
-            dots.set_color(PALETTE[2] if stable else PALETTE[1])
-            verdict.set_text("ổn định tuyệt đối" if stable else "nghiệm thoát khỏi đĩa đơn vị")
-            verdict.set_color(INK if stable else PALETTE[1])
+            dots.set_color(colour)
+            verdict.set_text(text)
+            verdict.set_color(INK if colour is MUTED else colour)
             touched += [dots, verdict]
         readout.set_text(f"$h\\lambda$ = {hlam:+.3f}")
         return touched
