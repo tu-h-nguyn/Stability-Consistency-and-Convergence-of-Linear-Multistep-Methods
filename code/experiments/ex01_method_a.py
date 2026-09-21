@@ -38,8 +38,20 @@ def run(h: float = H):
 
 
 def _amplification_roots(h: float) -> np.ndarray:
-    """Roots of lambda^2 + 4(1-h) lambda - (5 + 2h) for y' = -y."""
-    return np.roots([1.0, 4.0 * (1.0 - h), -(5.0 + 2.0 * h)])
+    """Roots of the difference equation method A induces on ``y' = -y``.
+
+    Substituting ``f_n = -Y_n`` into
+    ``Y_{n+2} + 4Y_{n+1} - 5Y_n = h(4 f_{n+1} + 2 f_n)`` moves both ``h`` terms
+    to the left with a plus sign::
+
+        Y_{n+2} + 4(1 + h) Y_{n+1} - (5 - 2h) Y_n = 0
+
+    so the characteristic polynomial is ``x^2 + 4(1+h)x - (5-2h)``. At ``h = 0``
+    this is ``rho(x) = (x-1)(x+5)``, and at ``h = 0.1`` the principal root is
+    ``0.9048 = e^{-0.1}`` while the parasitic one is ``-5.3048`` -- which is
+    exactly the per-step error growth the integrator exhibits.
+    """
+    return np.roots([1.0, 4.0 * (1.0 + h), -(5.0 - 2.0 * h)])
 
 
 def figure(sol, exact, err):

@@ -809,7 +809,7 @@ Nghiệm chính xác:
 \begin{tcolorbox}[title={Thay vào công thức}, colback=softgreen, colframe=tealgreen, colbacktitle=tealgreen]
 Với $f_n= -Y_n$, công thức trở thành
 \[
- Y_{n+2}+4(1-h)Y_{n+1}-(5+2h)Y_n=0.
+ Y_{n+2}+4(1+h)Y_{n+1}-(5-2h)Y_n=0.
 \]
 \end{tcolorbox}
 \end{frame}
@@ -817,7 +817,7 @@ Với $f_n= -Y_n$, công thức trở thành
 \begin{frame}{Phương trình đặc trưng của ví dụ}
 \begin{tcolorbox}[title={Phương trình đặc trưng tương ứng}, colback=softgreen, colframe=tealgreen, colbacktitle=tealgreen]
 \[
- \lambda^2+4(1-h)\lambda-(5+2h)=0.
+ \lambda^2+4(1+h)\lambda-(5-2h)=0.
 \]
 Khi $h$ nhỏ:
 \[
@@ -825,9 +825,10 @@ Khi $h$ nhỏ:
  \qquad
  \lambda_2=-5+O(h).
 \]
+Với $h=0.1$: $\lambda_1=0.9048=e^{-h}$, $\lambda_2=-5.3048$.
 \end{tcolorbox}
 \begin{tcolorbox}[title={Nhận xét}, colback=softred, colframe=warnred, colbacktitle=warnred]
-Vì một nghiệm có môđun xấp xỉ $5>1$, sai số nhỏ có thể bị khuếch đại rất nhanh qua từng bước lặp.
+Vì một nghiệm có môđun xấp xỉ $5>1$, sai số nhỏ bị khuếch đại rất nhanh qua từng bước lặp. Đo trên nghiệm số: tỉ số $|E_{n+1}|/|E_n| = 5.3048$, đúng bằng $|\lambda_2|$.
 \end{tcolorbox}
 \end{frame}
 \begin{frame}
