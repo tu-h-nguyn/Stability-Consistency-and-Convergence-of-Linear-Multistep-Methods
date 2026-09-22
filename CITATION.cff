@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: >-
+  Stability, Consistency and Convergence of Linear Multistep Methods
+message: "If you use this software or the accompanying report, please cite it."
+type: software
+# Two of the three authors appear only by initials in the report and slides
+# (\author{L. T. Nhân \and D. T. H. Yến \and N. H. Tú}); they are recorded here
+# exactly as the documents give them rather than expanded by guesswork.
+authors:
+  - family-names: L.
+    given-names: T. Nhân
+  - family-names: D.
+    given-names: T. H. Yến
+  - family-names: Nguyễn
+    given-names: Hoàng Tú
+abstract: >-
+  A tested implementation and report on linear multistep methods for initial
+  value problems: Adams-Bashforth, Adams-Moulton and BDF families with their
+  coefficients derived rather than tabulated, root-condition and order checks,
+  and a convergence study demonstrating the Dahlquist equivalence theorem —
+  that consistency plus zero-stability gives convergence, and that dropping
+  either one loses it.
+keywords:
+  - numerical analysis
+  - ordinary differential equations
+  - linear multistep methods
+  - zero-stability
+  - Dahlquist equivalence theorem
+license: MIT
+version: 1.0.0
+date-released: "2025-01-01"
